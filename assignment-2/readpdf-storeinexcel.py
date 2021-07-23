@@ -23,7 +23,7 @@ for i in range(2,40):
     numbers=ws.cell(row=i,column=3).value
     number=str(numbers)
 
-    if re.compile(r'(\d\d\d\d\d\d\d\d\d\d)').search(number) and re.match(r'0',number):
+    if re.compile(r'[01]\d\d\d\d\d\d\d\d\d\d').search(number) and re.match(r'0',number):
         ws['D{}'.format(i)]='Helpline_No'
         ws['D{}'.format(i)].font=Font(color="00FFFF")
     elif re.compile(r'(\d\d\d)-(\d\d\d\d\d\d\d\d)').search(number):
@@ -32,12 +32,12 @@ for i in range(2,40):
     elif re.compile(r'(\d\d\d\d)-(\d\d\d\d\d\d\d)').search(number):
         ws['D{}'.format(i)]='Landline_No.'
         ws['D{}'.format(i)].font=Font(color="008000")
-    elif re.compile(r'(\d\d\d\d\d\d\d\d\d\d)').search(number):
+    elif re.compile(r'[36789]\d\d\d\d\d\d\d\d\d').search(number):
         ws['D{}'.format(i)]='Mobile_No.'
-        ws['D{}'.format(i)].font=Font(color="FF0000")
+        ws['D{}'.format(i)].font=Font(color="0000FF")
     elif re.compile(r'(\d\d\d)').search(number):
         ws['D{}'.format(i)]='Emergency_Ambulance_No.'
-        ws['D{}'.format(i)].font=Font(color="0000FF")
+        ws['D{}'.format(i)].font=Font(color="FF0000")
     else:
         ws['D{}'.format(i)]='None'
 
