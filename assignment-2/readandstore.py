@@ -40,16 +40,17 @@ for i in range(2,40):
     else:
         ws['D{}'.format(i)]='None'
 
+M=str(input("enter start letter: "))
+h=str(input('enter end letter: '))
 
 for i in range(2,40):
     names=ws.cell(row=i,column=2).value
     name=str(names)
-
+    
     if re.compile(r'^[M].*[h]$').search(name):
         ws['E{}'.format(i)]=name
-        ws['E{}'.format(i)].font=Font(color="FF0000")
     else:
-        ws['E{}'.format(i)]='None'  
-        ws['E{}'.format(i)].font=Font(color="0000FF")      
+        ws['E{}'.format(i)]='None'   
+
 
 wb.save(r"D:\py-assignments-new\py-assignments\assignment-2\pdfreader.xlsx")
