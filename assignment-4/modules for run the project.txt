@@ -1,0 +1,4 @@
+1.pip install openpyxl
+2.logging
+3.pandas
+4.reportlab
