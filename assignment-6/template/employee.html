@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    
+        <thead>
+            <meta charset="UTF-8" />
+            <meta name="viepoint" content="width=device-width,initial-scale=1.0">
+        </thead>
+        <h1>Employee details</h1>
+        <tbody>
+            <table border="1">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Salary</th>
+                    <th>email</th>
+                    <th>Course</th>
+                    <th>UPDATES</th>
+                    <th>DELETES</th>
+                </tr>
+        
+            {% for row in data %}
+            <tr>
+                {% for d in row %}
+                    {% if loop.index == 6 %} 
+                        <td><a href="/employee={{ d }}">{{ d }}</a></td>
+                    {% else %}
+                        <td>{{ d }}</td>
+                    {% endif %}
+                {% endfor %} 
+            </tr>
+            {% endfor %}
+            </table>
+        </tbody>
+    
+</html>
