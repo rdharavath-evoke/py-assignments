@@ -1,25 +1,30 @@
 <html>
    <body>
-      
+      {% if data %}
       <form action = "{{ url_for('updates') }}" method = "POST">
          <h3>Enter data to update</h3>
          Id<br>
-         <input type = "int" name = "id" /></br>
-        <!--
+         <input type = "int" name = "id" value="{{data[0]}}"/></br>
+        
          Name<br>
-         <input type = "text" name = "nm" /></br>
-        --> 
+         <input type = "text" name = "nm"  value="{{data[1]}}"/></br>
+         
          Salary<br>
-         <input type = "real" name = "salary" /></br>
+         <input type = "int" name = "salary" value="{{data[2]}}" /></br>
         
          Email<br>
-         <input type = "text" name = "email" /><br>
+         <input type = "text" name = "email"  value="{{data[3]}}" /><br>
         <!-- 
          Course<br>
          <input type = "text" name = "course" /></br>
         -->
          <input type = "submit" value = "submit" /><br>
+         
       </form>
+      {% else %}
+      <h1>{{msg}}</h1>
+      {%endif%}
+      
       
    </body>
 </html>

@@ -19,7 +19,7 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-@app.route('/home')
+@app.route('/')
 def home():
    return render_template('home.html')
 
@@ -32,15 +32,7 @@ def employee():
     return render_template("employee.html", data=data)
 
 
-@app.route("/employee3")
-def employee_updation():
-    con = get_db()
-    cur=con.cursor()
-    cur.execute('SELECT * FROM employee')
-    data=cur.fetchall()
-    return render_template("update.html", data=data)
 
-#app=Flask(__name__,template_folder='template2')
 @app.route('/enternew')
 def enternew():
     return render_template('employee2.html')
@@ -53,15 +45,15 @@ def addrec():
             id = request.form['id']
             nm = request.form['nm']
             salary = request.form['salary']
-            #email = request.form['email']
-            #course = request.form['course']
+            email = request.form['email']
+            course = request.form['course']
 
             con=get_db()
             cur = con.cursor()
             cur.execute(f'SELECT * FROM employee WHERE Id={id}')
             data=cur.fetchall()
             if len(data)==0:
-                cur.execute("INSERT INTO employee (Id,Name,Salary) VALUES (?,?,?)",(id,nm,salary) )
+                cur.execute("INSERT INTO employee (Id,Name,Salary,Email,Course) VALUES (?,?,?,?,?)",(id,nm,salary,email,course) )
                 con.commit()
                 msg = "Record successfully added"
             else:
@@ -75,19 +67,26 @@ def addrec():
             con.close()
 
 
-#****************************************************************#            
+#****************************************************************            
 
-@app.route('/employee=update-here')
+@app.route('/employeeupdate')
 def update():
-    return render_template('update.html')
+    emp_id=request.args.get("id")
+    cur = get_db().cursor()
+    cur.execute(f"SELECT * FROM employee where id={emp_id}")
+    data=cur.fetchall()
+    if len(data)!=0:
+        return render_template('update.html',data=data[0])
+    return render_template('update.html',msg="Id not found",data=False)
+    
 
 
-@app.route("/updates",methods = ['POST', 'GET'])
+@app.route("/updates",methods = ['POST'])
 def updates():
     if request.method == "POST":
         try:
             id = request.form['id']
-            #nm = request.form['nm']
+            nm = request.form['nm']
             salary = request.form['salary']
             email = request.form['email']
             #course = request.form['course']
@@ -95,8 +94,8 @@ def updates():
             con = get_db()
             cursor = con.cursor()
 
-            sqlite_update_query = """Update employee set salary = ?, email = ? where id = ?"""
-            columnValues = (salary, email, id)
+            sqlite_update_query = """Update employee set name=?, salary = ?, email = ? where id = ?"""
+            columnValues = (nm,salary, email, id)
             cursor.execute(sqlite_update_query, columnValues)
             con.commit()
             msg="Multiple columns updated successfully"
@@ -105,18 +104,17 @@ def updates():
             msg="Failed to update multiple columns of sqlite table"+str(error)
         finally:
             return render_template("result.html",msg = msg)
-#updateMultipleColumns(3, 6500, 'ben_stokes@gmail.com')
 
 
-
-
-app.route('/header')
-def head():
+@app.route("/employeedelete",methods=["GET"])
+def deletetemployee():
+    empid=request.args.get("id")
     con = get_db()
-    cur=con.cursor()
-    cur.execute("select count(*) from employee")
-    number_of_employees = cur.fetchone()[0]
-    return render_template('header.html', number_of_employees=number_of_employees)
+    cursor = con.cursor()
+    cursor.execute(f"DELETE FROM employee where id={empid}")
+    con.commit()
+    return redirect("/employee")
+
 
 
 

@@ -23,7 +23,9 @@
             <tr>
                 {% for d in row %}
                     {% if loop.index == 6 %} 
-                        <td><a href="/employee={{ d }}">{{ d }}</a></td>
+                        <td><a href="/employeeupdate?id={{row[0]}}">Update</a></td>
+                    {% elif loop.index == 7 %} 
+                        <td><a href="/employeedelete?id={{row[0]}}">Delete</a></td>
                     {% else %}
                         <td>{{ d }}</td>
                     {% endif %}
@@ -31,6 +33,10 @@
             </tr>
             {% endfor %}
             </table>
+
+            <h2><a href = "\">go back to home page</a></h2>
+                
+             
         </tbody>
     
 </html>
