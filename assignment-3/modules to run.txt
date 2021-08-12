@@ -1,0 +1,3 @@
+re : to set the pattern for data which we want(re:regular expressions)
+tabula-py : to extract table from pdf
+openpyxl : to read and store the data from excel
