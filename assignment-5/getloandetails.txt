@@ -1,0 +1,43 @@
+->Below 30 Lac:6.5%
+->For 31 lac to 50 lac:7.5%
+->For 50 lac to 90 lac:9.0%
+
+Request params for API Endpoint:
+
+gethomeloandetails-1:
+
+{   "loan amount":100000,
+    "Tenure(no.of Years)":4  
+}
+
+{
+    "Total-Amount": 126000.0,
+    "Total-Interst": 26000.0
+}
+
+
+
+gethomeloandetails-2:
+
+{   "loan amount":350000,
+    "Tenure(no.of Years)":6  
+}
+
+{
+    "Total-Amount": 486500.0,
+    "Total-Interst": 136500.0
+}
+
+
+
+gethomeloandetails-3:
+
+{   "loan amount":10000000,
+    "Tenure(no.of Years)":3   
+}
+
+
+{
+    "more than 90Laks there is no homeloans ": 
+    "please select the amount less than 90Lakhs"
+}
