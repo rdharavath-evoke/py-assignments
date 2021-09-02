@@ -64,9 +64,7 @@ def update_movie(movie: MovieUpdate,database:Session=Depends(database.get_db)):
 @app.delete("/movie/{movieId}", response_model=MovieList)
 def delete_movie(movie: MovieDelete,database:Session=Depends(database.get_db)):
     query = Movie.delete().where(Movie.c.id==movie.id)
-    database.delete(query)
     database.commit()
-    database.refresh(query)
     return query
 
 add_pagination(app)
