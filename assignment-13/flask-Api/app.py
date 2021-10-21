@@ -4,9 +4,6 @@ import json
 import sqlite3
 from flask_cors import CORS, cross_origin
 
-from flask import Blueprint
-from flask_paginate import Pagination
-# from flask_paginate import Pagination, get_page_parameter
 
 app=Flask(__name__)
 cors = CORS(app)

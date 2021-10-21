@@ -12,7 +12,6 @@ import axios from 'axios';
         {field:"language",headerName:'LANGUAGE',width:150,editable: true},
     ];
 
-    
 
 function MyExportButton() {
     return (
@@ -59,10 +58,7 @@ function MyExportButton() {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[1, 2, 3, 4, 5, 10, 15]}
           components={{Toolbar: MyExportButton,}}
-          //columns={[{ field: 'id', editable: true }]}
 
-          // filterModel={{
-          //   items: [{ Field: 'auther', operator: 'ends with', value: 'v' },],}}
           
         />
       </div>
