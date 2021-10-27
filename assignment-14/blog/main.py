@@ -14,8 +14,6 @@ from . hashing import Hash
 app=FastAPI()
 
 
-    
-
 models.Base.metadata.create_all(engine)
 
 def get_db():
@@ -27,28 +25,10 @@ def get_db():
         
         
 
-@app.post("/login", tags=["Authentication"])
-def login(request:schemas.Login, db:Session=Depends(get_db)):
-    user=db.query(models.User).filter(models.User.email==request.username).first() 
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                            detail=f"Invalid Credentials")
-    return user
         
 
 
-@app.post('/Movie',status_code=status.HTTP_201_CREATED, tags=['Movies'])
-def create(request:schemas.Movie, db: Session = Depends(get_db)):
-    new_movie = models.Movie(name=request.name, title=request.title)
-    db.add(new_movie)
-    db.commit()
-    db.refresh(new_movie)
-    return new_movie
 
-@app.get("/Movie", tags=['Movies'])
-def getall(db: Session = Depends(get_db)):
-    movies=db.query(models.Movie).all()
-    return movies
 
 @app.get("/Movie/{id}", response_model=schemas.showMovie, tags=['Movies'])
 def show(id, response:Response, db: Session = Depends(get_db)):
