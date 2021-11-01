@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import MaterialTable from 'material-table'
+// import Link from 'material-table'
 
 import { forwardRef } from 'react';
 
@@ -18,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+// import { Avatar, Grid } from "@material-ui/core";
 
 
 function Materialtable() {
@@ -56,16 +58,37 @@ useEffect(()=>{
         .then(resp=>setData(resp))
     }
 
+    // const TitleImg = (rowData) => {
+    //     return (
+    //       <div>
+    //         <input type="file" />
+    //       </div>
+    //   )};
+
     const columns=[
+        
         {field:'id',title:'ID',width:150, validate:rowData=>rowData.id===undefined?"Required":true},
-        {field:'auther',title:'AUTHER',width:150, validate:rowData=>rowData.auther===undefined?"Required":true},
+        // {field:'auther',title:'AUTHER',width:150,
+        
+        // render:(row)=><Grid container alignContent="left">
+        //                 <Grid item sm={3}>
+        //                     <Avatar style={{backgroundColor:"green"}}>{row.auther[0]}</Avatar>
+        //                 </Grid>
+        //                 <Grid item>
+        //                     {row.auther}
+        //                 </Grid>
+        //             </Grid>,
+        // validate:rowData=>rowData.auther===undefined?"Required":true},
+        {field:'auther',title:'AUTHER',width:150, validate:rowData=>rowData.id===undefined?"Required":true},
         {field:"title",title:'TITLE',width:150,validate:rowData=>rowData.title===undefined?"Required":true},
-        {field:"language",title:'LANGUAGE',width:150,validate:rowData=>rowData.language===undefined?"Required":true}
+        {field:"language",title:'LANGUAGE',width:150,validate:rowData=>rowData.language===undefined?"Required":true},
+        { field:'avatar',title: 'data', validate: rowData =>rowData.data===undefined?"Required":true   }
+
     ];
 
 
     return(
-        <div style={{ height: 350, width: '80%' }} className="MaterialTable">
+        <div style={{ height: 250, width: '100%' }} className="MaterialTable">
             <h1 align="center">React Table using API</h1>
             
             <MaterialTable
@@ -78,9 +101,12 @@ useEffect(()=>{
                     paging:true,
                     pageSize:5,       // make initial page size
                     emptyRowsWhenPaging: false,   // To avoid of having empty rows
-                    pageSizeOptions:[2,5,10,20]   // rows selection options
+                    pageSizeOptions:[2,4,5,10,20]   // rows selection options
 
                   }}
+
+                //   title={window.location.host.replace(/.stackblitz.io/, '') || 'Starter Template'}
+
 
                 editable={{
                     onRowAdd:(newData)=>new Promise((resolve,reject)=>{
@@ -96,6 +122,7 @@ useEffect(()=>{
                             })
                         }),
                         onRowUpdate:(newData,oldData)=>new Promise((resolve,reject)=>{
+                            console.log(newData)
                             fetch(url+"/"+oldData.id,{
                                 method:"PUT",
                                 headers:{
@@ -115,14 +142,52 @@ useEffect(()=>{
                                     "Content-type":"application/json"
                                 },
                                 
-                            }).then(resp=>resp.json())
+                            }).then(resp=>console.log(resp))
                             .then(resp=>{getBooks()
                                 resolve()
                                 })
                             }),
+                        
                     
-                }}
-                  
+                    }}
+
+
+                //   rowData={query=>
+                //     new Promise((resolve, reject)=>{
+                //         let url='https://reqres.in/api/users?'
+                //         url += 'per_page=' + query.pageSize
+                //         url += '&page=' + (query.page + 1)
+                //             fetch(url)
+                //             .then(resp=>resp.json())
+                //             .then(result=>{getBooks()
+                //                 resolve({
+                //                     rowData:result.rowData,
+                //                     page: result.page - 1,
+                //                     totalCount: result.total,
+                //                 })
+                //             })
+                //         })
+                //     }
+
+
+                
+                // data={query =>
+                //     new Promise((resolve, reject) => {
+                //       let url = 'https://reqres.in/api/users?'
+                //          url += 'per_page=' + query.pageSize
+                //          url += '&page=' + (query.page + 1)
+                //       fetch(url)
+                //         .then(response => response.json())
+                //         .then(result => {
+                //           resolve({
+                //               data: result.data,
+                //               page: result.page - 1,
+                //               totalCount: result.total,
+                //           })
+                //         })
+                //     })
+                //   }
+                
             />
         </div>
     )

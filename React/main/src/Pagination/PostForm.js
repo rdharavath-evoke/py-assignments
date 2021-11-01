@@ -16,7 +16,8 @@ function PostForm() {
         id:"",
         auther:"",
         title:"",
-        language:""
+        language:"",
+        data:""
     })
 
     
@@ -34,7 +35,8 @@ function PostForm() {
             id:data.id,
             auther:data.auther,
             title:data.title,
-            language:data.language
+            language:data.language,
+            data:data.data
         },
         {
             headers:
@@ -77,7 +79,7 @@ function PostForm() {
                             <div className="container" >
                                 <div className="row">
                                     <div className="col col-lg-2" >
-                                        <span className="input-group-text" > 1.AUTHER </span>
+                                        <span className="input-group-text" > 2.AUTHER </span>
                                     </div>
                                     <div className="col-md-3 ">
                                         <input onChange={(e)=>handle(e)} id="auther" value={data.auther} placeholder="auther" type="text" required></input>
@@ -95,7 +97,7 @@ function PostForm() {
                             <div className="container" >
                                 <div className="row">
                                     <div className="col col-lg-2" >
-                                        <span className="input-group-text" > 2.TITLE </span>
+                                        <span className="input-group-text" > 3.TITLE </span>
                                     </div>
                                     <div className="col-md-3 ">
                                         <input onChange={(e)=>handle(e)} id="title" value={data.title} placeholder="title" type="text" required></input>
@@ -112,7 +114,7 @@ function PostForm() {
                             <div className="container" >
                                 <div className="row">
                                     <div className="col col-lg-2" >
-                                        <span className="input-group-text" > 3.LANGUAGE </span>
+                                        <span className="input-group-text" > 4.LANGUAGE </span>
                                     </div>
                                     <div className="col-md-3 ">
                                         <input onChange={(e)=>handle(e)} id="language" value={data.language} placeholder="language" type="text" required></input>
@@ -125,6 +127,26 @@ function PostForm() {
                 {/* <input onChange={(e)=>handle(e)} id="auther" value={data.auther} placeholder="auther" type="text"></input> */}
                 {/* <input onChange={(e)=>handle(e)} id="title" value={data.title} placeholder="title" type="text"></input> */}
                 {/* <input onChange={(e)=>handle(e)} id="language" value={data.language} placeholder="language" type="text"></input> */}
+                
+                
+                <div class="container">
+                    <div class=" bd-highlight mb-3">
+                        <div class="input-group" >
+                            <div className="container" >
+                                <div className="row">
+                                    <div className="col col-lg-2" >
+                                        <span className="input-group-text" > 5.UPLOAD </span>
+                                    </div>
+                                    <div className="col-md-3 ">
+                                        <input onChange={(e)=>handle(e)} id="data" value={data.data} placeholder="image upload" type="file" required></input>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                
+                
                 <div class="container">
                     <div class="d-grid col-1">
                         <button class="btn btn-primary" type="submit">Submit</button>
