@@ -1,5 +1,5 @@
 from flask import Flask,request
-appFlask = Flask(__name__)
+# appFlask = Flask(__name__)
 
 from flask_restful import Api, Resource
 from apispec import APISpec
@@ -9,7 +9,7 @@ from flask_apispec.views import MethodResource
 from marshmallow import Schema, fields
 from flask_apispec import marshal_with, doc, use_kwargs
 
-app=appFlask
+app = Flask(__name__)
 api=Api(app)
 
 def rates(amount):

@@ -28,5 +28,5 @@ class MovieUpdate(BaseModel):
     ticket_cost : str = Field(..., example="100")
     
 class MovieDelete(BaseModel):
-    id          : str = Field(...,example="Enter id")
+    id          : int 
     

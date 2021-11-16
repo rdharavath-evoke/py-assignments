@@ -1,69 +1,84 @@
-// import "./App.css";
-// import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
-// // import Addrow from "./Pagination/Addrow"
-// // import PaginationWithAPI from "./Pagination/PaginationWithAPI"
-// import Home from "./Pagination/Home"
-// import PostForm from "./Pagination/PostForm"
-// import Materialtable from "./Pagination/Materialtable";
-// // import Form from "./Pagination/Form";
-
-
-// function App() {
-
-  
-//     return (
-//       <Router>
-//         <div class="nav" >
-//           <div class="d-inline p-2 bg-info text-white">
-//             <NavLink to="/Home" >Home</NavLink>
-//           </div>
-//           <div class="d-inline p-2 bg-secondary text-white">
-//             <NavLink to="/Add-book" class="link-dark">Add record</NavLink>
-//           </div>
-          
-//           {/* <div class="d-inline p-2 bg-warning text-white">
-//             <NavLink to="/result" class="link-success">total records</NavLink>
-//           </div> */}
-//           <div class="d-inline p-2 bg-warning text-white">
-//             <NavLink to="/result" class="link-success">total records</NavLink>
-//           </div>
-//         </div>
-
-//         <hr />
-  
-//         <Switch>
-//           <Route exact path="/Home">
-//             <Home />
-//           </Route>
-//           <Route path="/Add-book">
-//             <PostForm />
-//           </Route>
-//           <Route path="/result">
-//             {/* <PaginationWithAPI /> */}
-//             <Materialtable/>
-//           </Route>
-//         </Switch>
-//       </Router>
-//     );
-//   }
-  
-
-// export default App;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
+// import Addrow from "./Pagination/Addrow"
+// import PaginationWithAPI from "./Pagination/PaginationWithAPI"
+import Home from "./Pagination/Home"
+import PostForm from "./Pagination/PostForm"
+import Materialtable from "./Pagination/Materialtable";
+// import Form from "./Pagination/Form";
 
 
 function App() {
-  return(
-    <div>
-      <h1>Quize</h1>
-      <Quize/>
-    </div>
-  )
+
   
-}
-export default App
+    return (
+      <Router>
+        <div class="nav" >
+          <div class="d-inline p-2 bg-info text-white">
+            <NavLink to="/Home" >Home</NavLink>
+          </div>
+          <div class="d-inline p-2 bg-secondary text-white">
+            <NavLink to="/Add-book" class="link-dark">Add record</NavLink>
+          </div>
+          
+          {/* <div class="d-inline p-2 bg-warning text-white">
+            <NavLink to="/result" class="link-success">total records</NavLink>
+          </div> */}
+          <div class="d-inline p-2 bg-warning text-white">
+            <NavLink to="/result" class="link-success">total records</NavLink>
+          </div>
+        </div>
+
+        <hr />
+  
+        <Switch>
+          <Route exact path="/Home">
+            <Home />
+          </Route>
+          <Route path="/Add-book">
+            <PostForm />
+          </Route>
+          <Route path="/result">
+            {/* <PaginationWithAPI /> */}
+            <Materialtable/>
+          </Route>
+        </Switch>
+      </Router>
+    );
+  }
+  
+
+export default App;
+
+
+
+
+
 
 
 

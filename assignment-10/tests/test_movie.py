@@ -5,7 +5,7 @@ import json
  
 import sys
 sys.path.append("d:/py-assignments-new/py-assignments/assignment-10/")
-from main import MovieList, app
+from main import MovieList, app, delete_movie
 
     
 
@@ -13,7 +13,7 @@ client = TestClient(app)
     
     
 def test_get_movie():
-    response = client.get('/movie?page=2&size=20')
+    response = client.get('/movie?page=1&size=10')
     assert response.status_code == 200
 
 def test_create_movie():
@@ -38,7 +38,7 @@ def test_update_movie():
     assert response.status_code == 200
     
 
-def test_deletemovie():
-    response = client.get('/movie')
+def test_delete_movie():
+    response = client.delete('/movie/1')
     assert response.status_code == 200
         

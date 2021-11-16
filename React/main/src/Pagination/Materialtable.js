@@ -49,40 +49,33 @@ function Materialtable() {
 
     const url="http://127.0.0.1:5000/books"
     const [data, setData] = useState([])
-useEffect(()=>{
-    getBooks()
-},[])
+    useEffect(()=>{
+        getBooks()
+    },[])
 
     const getBooks=()=>{
         fetch(url).then(resp=>resp.json())
         .then(resp=>setData(resp))
     }
 
-    // const TitleImg = (rowData) => {
-    //     return (
-    //       <div>
-    //         <input type="file" />
-    //       </div>
-    //   )};
 
     const columns=[
         
         {field:'id',title:'ID',width:150, validate:rowData=>rowData.id===undefined?"Required":true},
-        // {field:'auther',title:'AUTHER',width:150,
-        
-        // render:(row)=><Grid container alignContent="left">
-        //                 <Grid item sm={3}>
-        //                     <Avatar style={{backgroundColor:"green"}}>{row.auther[0]}</Avatar>
-        //                 </Grid>
-        //                 <Grid item>
-        //                     {row.auther}
-        //                 </Grid>
-        //             </Grid>,
-        // validate:rowData=>rowData.auther===undefined?"Required":true},
         {field:'auther',title:'AUTHER',width:150, validate:rowData=>rowData.id===undefined?"Required":true},
         {field:"title",title:'TITLE',width:150,validate:rowData=>rowData.title===undefined?"Required":true},
         {field:"language",title:'LANGUAGE',width:150,validate:rowData=>rowData.language===undefined?"Required":true},
-        { field:'avatar',title: 'data', validate: rowData =>rowData.data===undefined?"Required":true   }
+        { field:'img',title: 'Images',width:150,render:(rowData) =><img src={`http://127.0.0.1:5000/loadimage/${rowData.id}`} style={{width: 50, borderRadius: '60%'}}/> },
+        { field:'mp4',title: 'Videos',width:150,render:(rowData) =>
+                                                                    // <video  height="70px" controls="controls">
+                                                                    //     <source src={`http://127.0.0.1:5000/loadvideo/${rowData.id}`}    
+                                                                    //     type="video/mp4"/> 
+                                                                    // </video>    }
+                                                                    <video width="250" height="120" controls>
+                                                                    <source src={`http://127.0.0.1:5000/loadvideo/${rowData.id}`} 
+                                                                    type="video/mp4"/>
+                                                                    
+                                                                    </video> }
 
     ];
 
@@ -152,22 +145,7 @@ useEffect(()=>{
                     }}
 
 
-                //   rowData={query=>
-                //     new Promise((resolve, reject)=>{
-                //         let url='https://reqres.in/api/users?'
-                //         url += 'per_page=' + query.pageSize
-                //         url += '&page=' + (query.page + 1)
-                //             fetch(url)
-                //             .then(resp=>resp.json())
-                //             .then(result=>{getBooks()
-                //                 resolve({
-                //                     rowData:result.rowData,
-                //                     page: result.page - 1,
-                //                     totalCount: result.total,
-                //                 })
-                //             })
-                //         })
-                //     }
+                
 
 
                 

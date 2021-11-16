@@ -6,6 +6,9 @@ from flask_apispec.extension import FlaskApiSpec
 from flask_apispec.views import MethodResource
 from marshmallow import Schema, fields
 from flask_apispec import marshal_with, doc, use_kwargs
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 flask_app=Flask(__name__)
 app=flask_app
@@ -19,20 +22,34 @@ class EmployeeRequestSchema(Schema):
     emp_email = fields.String(required=True, description="employee-email address")
     
 
-class MainClass(MethodResource,Resource):
+
+class employee(MethodResource,Resource):
     def get(self):
         return {"KEY":"GET"}
     @use_kwargs(EmployeeRequestSchema,location=('json'))
     def post(self,*args,**kwrgs):
-        print(request.get_json())
+        logging.debug(request.get_json())
         return {"KEY":"POST"}
     
     
+class StudentRequestSchema(Schema):
+    stu_id = fields.Integer(required=True, description="This is student-id")
+    stu_name = fields.String(required=True, description="student-name")
+    
+class student(MethodResource,Resource):
+    def get(self):
+        return {"KEY":"GET"}
+    @use_kwargs(StudentRequestSchema,location=('json'))
+    def post(self,*args,**kwrgs):
+        logging.debug(request.get_json())
+        return {"KEY":"POST"}
 
-api.add_resource(MainClass,"/api")
+
+api.add_resource(employee,"/emp-api")
+api.add_resource(student,"/stu-api")
 app.config.update({
     'APISPEC_SPEC': APISpec(
-        title='Employee-details',
+        title='Employee-Api',
         version='v1',
         plugins=[MarshmallowPlugin()],
         openapi_version='2.0.0'
@@ -42,7 +59,8 @@ app.config.update({
 })
 docs = FlaskApiSpec(app)
 
-docs.register(MainClass)
+docs.register(employee)
+docs.register(student)
 if __name__=="__main__":
     app.run(debug=True)
         
