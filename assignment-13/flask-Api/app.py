@@ -1,10 +1,14 @@
+
 from logging import debug
 from flask import Flask,request,jsonify,redirect,url_for,flash
 import json
 import os
 import sqlite3
 from flask_cors import CORS, cross_origin
-from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileMultiDict
+from werkzeug.utils import format_string, secure_filename
+from flask import send_file, send_from_directory
+
 
 
 app=Flask(__name__)
@@ -14,11 +18,11 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.secret_key="caircocoders-ednalan"
 
-UPLOAD_FOLDER="static/uploads"
+UPLOAD_FOLDER="D:/images"
 app.config["UPLOAD_FOLDER"]=UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16*1024*1024
 
-ALLOWED_EXTENTIONS = set(['txt','pdf','png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENTIONS = set(['txt','pdf','png', 'jpg', 'jpeg', 'gif', 'mp4'])
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit('.',1)[1].lower in ALLOWED_EXTENTIONS
@@ -30,6 +34,15 @@ def db_connection():
     except sqlite3.error as e:
         print(e)
     return conn
+
+@app.route("/loadimage/<filename>")
+def sendfile(filename):
+    return send_from_directory(UPLOAD_FOLDER, f"{filename}.jpg")
+
+@app.route("/loadvideo/<filename>")
+def display_video(filename):
+    return send_from_directory(UPLOAD_FOLDER, f"{filename}.mp4")
+    
 
 @app.route("/books",methods=["GET","POST"])
 @cross_origin()
@@ -51,37 +64,33 @@ def books():
     if request.method=="POST":
         try:
             
+            print('....')
+            file = request.files['file'] if request.files.get('file') else None
+            print('....')
+            print (file)
             
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-            file = request.files['file']
-            # If the user does not select a file, the browser submits an
-            # empty file without a filename.
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return redirect(url_for('download_file', name=filename))
-            
-            
-            
-            # print(request.files)
-            # print(request.form)
-            
-            # new_auther=request.form["auther"]
-            # new_lang=request.form["language"]
-            # new_title=request.form["title"] 
-            
+           
+            new_auther=request.form["auther"]
+            new_lang=request.form["language"]
+            new_title=request.form["title"] 
             # new_id=request.form["id"]
-            # sql=""" insert into book (auther, language, title, id,data) values(?,?,?,?,?)"""
-            # curser=cursor.execute(sql,(new_auther,new_lang,new_title,new_id,data)) 
-            # conn.commit()
+            
+            sql=""" insert into book (auther, language, title) values(?,?,?)"""
+            
+            curser=cursor.execute(sql,(new_auther,new_lang,new_title)) 
+            conn.commit()
+            
+            
+            if file : 
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],f"{cursor.lastrowid}.jpg"))
+            
             # return f"Book with the id : {curser.lastrowid} created successfully",201  
             
-            # return {}
+            if file : 
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],f"{cursor.lastrowid}.mp4"))
+            
+            return f"Book with the id : {curser.lastrowid} created successfully",201 
+        
         except Exception as e: 
             return str(e)
 
@@ -104,23 +113,36 @@ def single_book(id):
     
     if request.method=="PUT":
         try:
+            
+            print('....')
+            file = request.files['file'] if request.files.get('file') else None
+            print('....')
+            print (file)
+            
+            
+            
             sql=""" update book set title=?, auther=?, language=?, data=? where id=?"""
             
-            req_data =  request.get_json(force=True)
-            auther=req_data["auther"]
-            language=req_data["language"]
-            title=req_data["title"]
-            data=req_data["data"]
+            # req_data =  request.get_json(force=True)
+            auther=request.form["auther"]
+            language=request.form["language"]
+            title=request.form["title"]
+            # data=req_data["data"]
             
             updated_book={
                 "id":id,
                 "auther": auther,
                 "language":language,
                 "title":title,
-                "data" : data
+            
             }
-            conn.execute(sql,(title,auther,language,data,id))
+            conn.execute(sql,(title,auther,language,id))
             conn.commit()
+            
+            if file :
+                
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],f"{cursor.lastrowid}.jpg"))
+            
             return updated_book
         except Exception as e:
             return e
