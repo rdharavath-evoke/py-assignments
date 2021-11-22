@@ -138,7 +138,7 @@ function PostForm() {
                                         <span className="input-group-text" > 5.UPLOAD </span>
                                     </div>
                                     <div className="col-md-3 ">
-                                        <input onChange={(e)=>handle(e)} id="data" value={data.data} placeholder="image upload" type="file" required></input>
+                                        <input onChange={(e)=>handle(e)} id="data" value={data.data} placeholder="image upload" type="file" ></input>
                                     </div>
                                 </div>
                             </div> 
@@ -156,7 +156,7 @@ function PostForm() {
                                         <span className="input-group-text" > 5.Upload Video </span>
                                     </div>
                                     <div className="col-md-3 ">
-                                        <input onChange={(e)=>handle(e)} id="data" value={data.data} placeholder="video upload" type="file" required></input>
+                                        <input onChange={(e)=>handle(e)} id="data" value={data.data} placeholder="video upload" type="file" ></input>
                                     </div>
                                 </div>
                             </div> 
