@@ -1,22 +1,5 @@
-import React from "react";
-import axios from "axios";
-import { useState } from "react";
 
-function App() {
-    const url="http://127.0.0.1:5000/employee"
-    const [data,setdata] = useState({
-        id:"",
-        fname:"",
-        lname:"",
-        salary:"",
-    })
 
-    function handle(e) {
-        const newdata={...data}
-        newdata[e.target.id]=e.target.value
-        setdata(newdata)
-        console.log(newdata)
-    }
 
     
     function employee(e) {

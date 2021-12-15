@@ -8,10 +8,7 @@ from . routers import movie,user
 app=FastAPI()
 
 
-models.Base.metadata.create_all(engine)
 
-app.include_router(movie.router)
-app.include_router(user.router)
 
 
 
