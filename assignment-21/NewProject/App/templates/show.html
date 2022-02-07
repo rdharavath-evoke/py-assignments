@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-3">
+
+  <h4>xref details: </h4>
+  <a href="{% url 'add' %}" class="btn btn-info">Add New</a>
+  
+  <a href="{% url 'upload'%}" class="btn btn-secondary">Upload Via Excel</a>
+
+  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Vendor.." title="Type in a Vendor">
+
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[3];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+  </script>
+    
+  <br/>
+  <table class="table" id="myTable">
+      <thead>
+          <tr>
+              <th>Action</th>
+              <th>Version</th>
+              <th>ID</th>
+              <th>Vendor</th>
+              <th>Base_Code</th>
+              <th>COA_Charecteristic</th>
+              <th>COA_UNIT</th>
+              <th>COA_Specification</th>
+              <th>SAP_Group</th>
+              <th>SAP_Group_Counter</th>
+              <th>SAP_Charecteristic</th>
+              <th>SAP_Accepted result</th>
+              <th>SAP_rejected result</th>
+              <th>Material</th>
+              <th>Material_Description</th>
+              <th>Change_Log</th>   
+                
+          </tr>
+      </thead>
+      <tbody>
+          {% for s in data %}
+              <tr>
+                  <td class="row row-cols-3" style="width:200px">
+                    <a href="update/{{s.sid}}" class="btn btn-info">Edit</a> 
+                    <button onclick="document.getElementById('sid').style.display='block'" class="btn btn-danger">Delete</button> 
+                    <div id="sid" class="modal">
+                      <span onclick="document.getElementById('sid').style.display='none'" class="close" title="Close Modal"></span>
+                      <br/><br/><br/><br/>
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <form class="modal-header" ><br\>
+                                <!-- <h1>Delete Row</h1> -->
+                                <h3>Are you sure you want to delete ?</h3><br\>
+                                <div class="clearfix">
+                                  <!-- <button type="button" onclick="document.getElementById('sid').style.display='none'" class="cancelbtn">Cancel</button> -->
+                                  <a href="delete/{{s.sid}}" class="btn btn-danger" >Delete</a>
+                                  <a href="" class="btn btn-info" class="cancelbtn" >Cancel</a>
+                                </div>
+                            </form>
+                          <div\>
+                        </div\>
+                    </div>
+                          
+                    <script>
+                      var modal = document.getElementById('sid');
+                      window.onclick = function(event) {
+                        if (event.target == modal) {
+                          modal.style.display = "none";
+                        }
+                      }
+                    </script>
+                  </td>
+                  <td>{{s.Version}}</td>
+                  <td>{{s.sid}}</td>
+                  <td>{{s.Vendor}}</td>
+                  <td>{{s.Base_Code}}</td>
+                  <td>{{s.COA_Charecteristic}}</td>
+                  <td>{{s.COA_UNIT}}</td>
+                  <td>{{s.COA_Specification}}</td>
+                  <td>{{s.SAP_Group}}</td>
+                  <td>{{s.SAP_Group_Counter}}</td>
+                  <td>{{s.SAP_Charecteristic}}</td>
+                  <td>{{s.SAP_accepted_result}}</td>
+                  <td>{{s.SAP_rejected_result}}</td>
+                  <td>{{s.Material}}</td>
+                  <td>{{s.Material_Description}}</td>
+                  <td>{{s.Change_Log}}</td>
+                  
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+
+</div>
+{% endblock content %}
+
+

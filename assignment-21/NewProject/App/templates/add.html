@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-3">
+    
+    <h4 class="text-success">Xref data : </h4>
+    <br/>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <div class="container">
+            <br/>
+                <div class="row row-cols-5">
+                    <div class="form-group">
+                        <label for="" class="fw-bold">ID</label>
+                        <input type="text" name='sid' class="col">
+                    </div>
+                    
+                        <div class="form-group">
+                        <label for="" class="fw-bold">Version</label>
+                        <input type="text" name='Version' class="col">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="fw-bold">Vendor</label>
+                        <input type="text" name='Vendor' class="col">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="fw-bold">Base_Code</label>
+                        <input type="text" name='Base_Code' class="col">
+                    </div>
+                </div>
+            <br/>
+
+            <div class="row row-cols-5">
+                <div class="form-group">
+                    <label for="" class="fw-bold">COA_Charecteristic</label>
+                    <input type="text" name='COA_Charecteristic' class="col">
+                </div>
+            
+                <div class="form-group">
+                    <label for="" class="fw-bold">COA_UNIT</label>
+                    <input type="text" name='COA_UNIT' class="col">
+                </div>
+            
+                <div class="form-group">
+                    <label for="" class="fw-bold">COA_Specification</label>
+                    <input type="text" name='COA_Specification' class="col">
+                </div>
+            </div>
+            </br>
+
+            <div class="row row-cols-5">
+                <div class="form-group">
+                    <label for="" class="fw-bold">SAP_Group</label>
+                    <input type="text" name='SAP_Group' class="col">
+                </div>
+                <div class="form-group">
+                    <label for="" class="fw-bold">SAP_Group_Counter</label>
+                    <input type="text" name='SAP_Group_Counter' class="col">
+                </div>
+                <div class="form-group">
+                    <label for="" class="fw-bold">SAP_Charecteristic</label>
+                    <input type="text" name='SAP_Charecteristic' class="col">
+                </div>
+            </div>
+            <br/>
+
+            <div class="row row-cols-5">
+                <div class="form-group">
+                    <label for="" class="fw-bold">SAP_accepted_result</label>
+                    <input type="text" name='SAP_accepted_result' class="col">
+                </div>
+                <div class="form-group">
+                    <label for="" class="fw-bold">SAP_rejected_result</label>
+                    <input type="text" name='SAP_rejected_result' class="col">
+                </div>
+            </div>    
+            <br/>
+
+            <div class="row row-cols-5">
+                <div class="form-group">
+                    <label for="" class="fw-bold">Material</label>
+                    <input type="text" name='Material' class="col">
+                </div>
+                <div class="form-group">
+                    <label for="" class="fw-bold">Material_Description</label>
+                    <input type="text" name='Material_Description' class="col">
+                </div>
+                <div class="form-group">
+                    <label for="" class="fw-bold">Change_Log</label>
+                    <input type="text" name='Change_Log' class="col">
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Save Record</button>
+                <a href="{% url 'show'%}" class="btn btn-info">Show Records</a>
+            </div>
+        </div>
+        
+    </form>
+
+
+</div>
+{% endblock content %}

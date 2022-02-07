@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-3">
+
+    <h4>Update Record</h4>
+    <hr>
+    <form action="/update/{{xref.sid}}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="">Version</label>
+            <input type="text" name='Version' value="{{xref.Version}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">ID</label>
+            <input type="text" name='sid' value="{{xref.sid}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Vendor</label>
+            <input type="text" name='Vendor' value="{{xref.Vendor}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Base_Code</label>
+            <input type="text" name='Base_Code' value="{{xref.Base_Code}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">COA_Charecteristic</label>
+            <input type="text" name='COA_Charecteristic' value="{{xref.COA_Charecteristic}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">COA_UNIT</label>
+            <input type="text" name='COA_UNIT' value="{{xref.COA_UNIT}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">COA_Specification</label>
+            <input type="text" name='COA_Specification' value="{{xref.COA_Specification}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">SAP_Group</label>
+            <input type="text" name='SAP_Group' value="{{xref.SAP_Group}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">SAP_Group_Counter</label>
+            <input type="text" name='SAP_Group_Counter' value="{{xref.SAP_Group_Counter}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">SAP_Charectaristic</label>
+            <input type="text" name='SAP_Charecteristic' value="{{xref.SAP_Charecteristic}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">SAP_accepted_result</label>
+            <input type="text" name='SAP_accepted_result' value="{{xref.SAP_accepted_result}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">SAP_rejected_result</label>
+            <input type="text" name='SAP_rejected_result' value="{{xref.SAP_rejected_result}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Material</label>
+            <input type="text" name='Material' value="{{xref.Material}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Material_Description</label>
+            <input type="text" name='Material_Description' value="{{xref.Material_Description}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Change_Log</label>
+            <input type="text" name='Change_Log' value="{{xref.Change_Log}}" class="form-control">
+        </div>
+        
+        
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+            <a href="{% url 'show'%}" class="btn btn-info">Show Records</a>
+        </div>
+    </form>
+
+
+</div>
+{% endblock content %}

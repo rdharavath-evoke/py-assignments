@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+       
+<!--       
+{% if messages %}
+    {%for message in message%}
+        <div class="alert alert-{{message.tags}}" role="alert">
+            <p {% if message.tags %} class=""{%endif%}>{{message}}</p>
+        </div>
+    {%endfor%}
+{%endif%}
+
+<div class="container mt-3">
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+
+            <h2>Choose Excel File to upload :</h2>
+            <br />
+            <input type="file" id="myFile" /> <br />
+            <br />
+        
+        <label>Upload file : </label><br />
+		<input type="submit">
+    </form ut type='file' name='myfile'>
+    <br />
+    
+</div>
+
+ -->
+
+
+<!-- <div class="container mt-3">
+
+	<form method="post" enctype="multipart/form-data">
+		{%csrf_token%}
+		<input type="file" name="myfile">
+		<button type="submit" name="upload">Upload</button>
+	</form>
+
+</div> -->
+
+
+
+
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
+
+
+<br/><br/><br/>
+<div class="continer">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container"> 
+      <div class="col-5">
+        <h3>Excel Data Upload : </h3><br/>
+        <input type="file" name="myfile" class="form-control"><br/>
+        <button type="submit" class="btn btn-success" >Upload</button>
+        <!-- <a href="{% url 'show' %}" class="btn btn-info">Upload</a>                             -->
+        <br/>
+      </div> <br/>  
+      {% if url %}
+        <p class="fw-bold">Uploaded file: <a href="{{ url }}">{{ url }}</a></p>
+      {% endif %}   
+    </div>
+  </form>
+</div>
+
+  
+    
+{% endblock %}
