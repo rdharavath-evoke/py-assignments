@@ -11,8 +11,6 @@ from pdfile3 import pdf_extraction
 df = tabula.read_pdf(r"C:\Users\rdharavath\Downloads\newfile\CoAs SNF France\COA_4139862_1666278103_MAGNAFLOC LT 31.pdf",
                 pdf_extraction(),columns=pdf_extraction(),stream=True, lattice=True ,guess = True,pages=all, multiple_tables=True)
 
-# tabula.read_pdf(document_path,columns=required_cols[0].split(","),stream=True,guess = False,pages=self.all,pandas_options=self.pandas_options)
-print(df)
 
 
  
