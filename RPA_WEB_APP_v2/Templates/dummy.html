@@ -1,0 +1,642 @@
+{% load static %}
+{% load tz %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
+
+    <link rel="stylesheet" href="{% static "/style.css" %}" />
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+  </head>
+
+
+  <header>
+    <div class="container">
+      <div class="main-head">
+        <img
+          src="https://www.evoketechnologies.com/wp-content/uploads/2020/07/Evoke_logo_for-web.svg"
+          width="250"
+          class="logo"
+        />
+        <div class="rightSide">
+          <img src="{% static 'images/bell.png' %}" />
+          <img src="{% static 'images/user-icon.png' %}" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <h4 style="text-align:center" >GRN Details</h4>
+            
+  <div class="row">
+    &emsp;
+    <div class="col-1">
+      <label size="12" style="font-weight: bold;">SL. No. :</label>    
+    </div>
+    <div class="col-auto">  
+      <input size="3" style="background-color: transparent;border: 0px solid; color: rgb(139, 136, 136);  "type="text"  id="invoice_po_number" name="po_number" value="" disabled="true" />
+    </div>
+
+      <div class="col-1">
+      <label size="6" style="font-weight: bold;">Po Number :</label>    
+      </div>
+      <div class="col-1">  
+      <input  style="background-color: transparent;border: 0px solid; color: rgb(139, 136, 136);"type="text"  id="invoice_po_number" name="po_number" value="" disabled="true" />
+      </div>
+      
+      &emsp;
+      <p style="font-weight: bold;">Status :</p>
+      <div class="col-1"> 
+        <input type="text"  style="background-color: transparent;border: 0px solid; color: rgb(139, 136, 136) id="invoice_status" name="status" value="" disabled="true" />
+      </div>
+  </div>
+
+
+
+  
+  <body>
+    <form action="/api/update/invoice/" method="post" id="invoice_id">
+      {% csrf_token %}
+      <div class="row"> 
+        <!-- first container -->
+        <div class="col" text-align: justify;>
+          <div class="leftside">
+            <div class="in active" id="menu3">
+
+              <br/>
+              <div class="container">
+                  <div class="row">
+                    
+                    <div class="col-3">
+                      <div style="font-weight:bold;">Po No on Doc</div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-3">
+                      <div style="font-weight:bold;">Invoice No</div>
+                    </div>
+                    
+                    <div class="col-3">
+                      <div style="font-weight:bold;">Invoice Date</div>
+                    </div>
+                  </div>
+              </div>
+              <span class="inline">&ensp;&ensp;
+                  <input class="inputbold" type="text" id="invoice_document_po_number" name="document_po_number" size="12" placeholder=""/>&ensp;&ensp;&ensp;
+                  <input type="hidden" id="invoice_sl_no" name="invoice_id" />
+
+                  <input class="inputbold" type="text" id="invoice_no" name="invoice_no" size="12" placeholder=""/>&emsp;&ensp;&ensp;
+                  <input class="inputbold" type="text" id="invoice_date" name="invoice_date" size="12" placeholder=""/>&ensp;&ensp;
+
+              </span>
+              <br/><br/>
+
+              <div class="container">
+                  <div class="row">
+                      
+                      
+                      
+                      <div class="col-3">
+                        <div style="font-weight:bold;">Bill of Entry</div>
+                      </div>
+                      
+                      <div class="col-3">
+                        <div style="font-weight:bold;">Bill of Ladding</div>
+                      </div>
+                    </div>
+              </div>
+
+              <span class="inline">&ensp;&ensp;
+                  <input class="inputbold" type="text" id="invoice_bill_of_entry" name="bill_of_entry_no" size="12" placeholder=""/>&ensp;&ensp;&ensp;
+                  <input class="inputbold" type="text" id="invoice_bill_of_loading" name="bill_of_ladding" size="12" placeholder=""/>
+              </span>
+              <br/><br/>
+
+              
+              <div class="grid-container">
+                <div id="table" class="table-editable">
+                
+                  <table class="table data">
+                    <tr>
+                  
+                        <th style="color: rgb(19, 22, 19);" size="10">Material Name</th>
+                        <th style="color: rgb(19, 22, 19);">Quantity</th>
+                        <th style="color: rgb(19, 22, 19);">Unit</th> 
+                        <th style="color: rgb(19, 22, 19);">Mfg. Date</th>
+                        <th style="color: rgb(19, 22, 19);">Exp. Date</th>
+                        <th style="color: rgb(19, 22, 19);">Batch</th>
+                    </tr>
+
+                    <tr> 
+                      <td><input type='text' id="invoice_material" name="material_name" maxlength="11" size="11" placeholder="Caustic Soda Lye" disabled="true"/></td>
+                      <td><input type='text' id="invoice_qty" name="quantity" maxlength="10" size="4" placeholder=""/></td>
+                      <td><input type='text' id="invoice_unit" name="unit" maxlength="10" size="2" placeholder=""/></td>
+                      <td><input type='text' id="coa_date_of_manfacture" name="date_of_manfacture" maxlength="10" size="6" placeholder=""/></td>
+                      <td><input type='text' id="coa_expiry_date" name="expiry_date" maxlength="10" size="6" placeholder=""/></td>
+                      <td><input type='text' id="coa_batch_no" name="batch" maxlength="10" size="5" placeholder=""/></td>
+                    </tr>
+                    
+                    <tr class="hide">
+                      <td><input type='text' maxlength="11" size="11" placeholder="Formic Acid" disabled="true"/></td>
+                      <td><input type='text' maxlength="10" size="5" placeholder=""/></td>
+                      <td><input type='text' maxlength="10" size="2" placeholder=""/></td>
+                      <td><input type='text' maxlength="10" size="6" placeholder=""/></td>
+                      <td><input type='text' maxlength="10" size="6" placeholder=""/></td>
+                      <td><input type='text' maxlength="10" size="5" placeholder=""/></td>        
+                    </tr>
+                  </table>
+                </div>
+                
+              </div>
+
+              <br/>
+              <div style="padding-left: 220px;">
+                  <input type="submit"  class="btn btn-dark" style="width: 100px;background-color: #111111;color: white;border-radius: 5px;" value="Save" id="invoice_button">
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <!-- second container -->
+        <div class="col">
+          <div class="rightside">
+            <div class="container">
+              <br/>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <a id="invoice_iframe_a"onclick="return showDoc('invoice_iframe','boe_iframe','coa_iframe')" style="width: 115px;
+                    height: 25px;
+                    background: #181a1b;
+                    padding: 2px 2px 1px;
+                    text-align: center;
+                    border-radius: 1px 3px 2px;
+                    color: rgb(248, 248, 248);
+                    font-weight: bold;
+                    line-height: 8px;">INVOICE</a>
+                    &nbsp;&nbsp;
+
+                    <a id="boe_iframe_a" onclick="return showDoc('boe_iframe','invoice_iframe','coa_iframe')" style="width: 115px;
+                    height: 25px;
+                    background: #181a1b;
+                    padding: 2px 2px 1px;
+                    text-align: center;
+                    border-radius: 1px 3px 2px;
+                    color: white;
+                    font-weight: bold;
+                    line-height: 8px;">BOE</a>
+                    &nbsp;&nbsp;
+    
+                    <a id="coa_iframe_a" onclick="return showDoc('coa_iframe','boe_iframe','invoice_iframe')" style="width: 115px;
+                    height: 25px;
+                    background: #181a1b;
+                    padding: 2px 2px 1px;
+                    text-align: center;
+                    border-radius: 1px 3px 2px;
+                    color: white;
+                    font-weight: bold;
+                    line-height: 8px;">COA</a>
+    
+    
+    
+    
+                    <!-- <div class="col-md-2">
+                    <label class="" id="Grn_deatils_id">GRN Details</label>
+                    <ul  id="nav_list_id">
+                        <li><a data-toggle="tab" href="#menu3">Invoice</a></li>
+    
+                        <li><a data-toggle="tab" href="#menu4">CoA</a></li>
+                    </ul>
+                    </div> -->
+    
+                    <div class="imageHolder">
+                    
+                        <iframe id="invoice_iframe" src="{% static 'images/Hari Om Enter.pdf' %}" style="width: 100%; height: 120%; border: none;display: block"></iframe>
+                    
+                        <iframe id="boe_iframe" src="" style="width: 100%; height: 100%; border: none; display: none;"></iframe>
+    
+                        <iframe id="coa_iframe" src="" style="width: 100%; height: 100%; border: none; display: none;" ></iframe>  
+                    </div>
+                    
+                      
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+
+    
+    <style type="text/css">
+        label{
+        width: 100px;
+        display: inline-block;
+        }
+        .leftside{
+        height: 80vh;
+        width: 100%;
+        }
+        .rightside{
+        height: 80vh;
+        width: 100%;
+        }
+        .rightside{
+        background:rgb(219, 214, 212) ;
+        }
+        .leftside{
+        background: rgb(207, 205, 204);
+        }
+
+        .a{
+            text-decoration: none;
+            text-emphasis-color: black;
+        }
+
+        .table {
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .table thead {
+          position: sticky;
+          top: 0;
+        }
+
+        .table thead th {
+          border: 1px solid #e4eff8;
+          background: rgb(240, 235, 235);
+          cursor: pointer;
+        }
+
+        .table thead th.header-label {
+          cursor: pointer;
+          background: linear-gradient(0deg, #e4eff8, #4578a2 5%, #e4eff8 150%);
+          color: rgb(238, 232, 232);
+          border: 1px solid white;
+        }
+
+        .table th,
+        .table td {
+          padding: 0.2rem 0.5rem;
+          text-align: center;
+        }
+
+        .table td {
+          border: 1px solid #e4eff8;
+        }
+
+        .table .tr-inputs th {
+          position: relative;
+          padding: 0;
+          padding-bottom: 1.2rem;
+          margin: 0;
+        }
+
+        .table .tr-inputs div {
+          position: absolute;
+          display: inline-block;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+        }
+        th {
+              border: 1px solid rgb(226, 220, 220);
+        
+              margin-bottom: 10px;
+            }
+
+        .table input {
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        @import "compass/css3";
+
+        .table-editable {
+          position: relative;
+          
+         
+        }
+
+        .grid-container {
+          display: grid;
+          grid-template-columns: auto auto auto auto auto auto;
+          grid-template-rows: 40px 100px;
+          grid-gap: 5px;
+          background-color: #b8bdbe;
+          padding: 5px;
+        }
+
+        .grid-container > div {
+          
+          text-align: center;
+          padding: 5px 5px;
+          font-size: 15px;
+        }
+
+        
+    </style>
+
+      
+
+    <script>
+        var parser = new DOMParser();
+        var url="http://{{ IP_ADDRESS}}:8000/api/"
+        if (location.href.includes('localhost')){
+          location.href=url.replace("api","index")
+        }
+        function queryParams() {
+          return {
+            type: 'owner',
+            sort: 'updated',
+            direction: 'desc',
+            per_page: 100,
+            page: 1,
+          };
+        }
+        // function rowColors(row, index) {
+        //   var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+        //   if (index % 2 === 0 && index / 2 < classes.length) {
+        //     return {
+        //       classes: classes[index / 2],
+        //     };
+        //   }
+        //   return {};
+        // }
+
+              $("body").on("click", ".tr-class-2", function () {
+            document.getElementById("menu3").className="active in"
+          var invoice_id=this.getAttribute("data-invoice_id")
+            $.ajax(url+"load/invoice/"+String(invoice_id), 
+      {   type:"GET",
+      dataType: 'json', // type of response data
+      timeout: 500,     // timeout milliseconds
+      success: function (data,status,xhr) {  // success callback function
+        if(data["DATA"]["status"]=="Processed"){
+          document.getElementById("invoice_button").style.display='none';
+        }
+        else{
+          document.getElementById("invoice_button").style.display='block';
+        }
+        document.getElementById("boe_iframe").src=""
+        document.getElementById("Grn_deatils_id").innerHTML="GRN Details of <b>"+data["DATA"]["invoice_id"].toString()+"</b>"
+        document.getElementById("invoice_sl_no").value=data["DATA"]["invoice_id"]
+        document.getElementById("invoice_document_po_number").value=data["DATA"]["document_po_number"]
+        document.getElementById("add_coa_sl_no").value=data["DATA"]["invoice_no"]
+        document.getElementById("add_coa_invoice_no").value=data["DATA"]["invoice_no"]
+        var invoice_date=data["DATA"]["invoice_date"]
+        document.getElementById("add_coa_invoice_no").disabled=true;
+        document.getElementById("invoice_status").value=data["DATA"]["status"]
+        document.getElementById("invoice_po_number").value=data["DATA"]["po_number"]
+        document.getElementById("invoice_no").value=data["DATA"]["invoice_no"]
+        document.getElementById("invoice_date").value=data["DATA"]["invoice_date"]
+        document.getElementById("invoice_qty").value=data["DATA"]["quantity"]
+        document.getElementById("invoice_unit").value=data["DATA"]["unit"]
+        document.getElementById("invoice_material").value=data["DATA"]["material_name"]
+        //  document.getElementById("invoice_batch").value=data["DATA"]["batch"]
+        document.getElementById("invoice_bill_of_entry").value=data["DATA"]["bill_of_entry_no"]
+        document.getElementById("invoice_bill_of_loading").value=data["DATA"]["bill_of_ladding"]
+        document.getElementById("invoice_add_path").value=data["DATA"]["invoice_path"]
+        document.getElementById("invoice_iframe").src=url+"load/pdf/"+String(data["DATA"]["invoice_id"])+"/invoice/"
+        if(data["DATA"]["boe_doc_path"]!==null){
+          document.getElementById("boe_iframe").src=url+"load/pdf/"+String(data["DATA"]["invoice_id"])+"/boe/"
+        }
+        var container=document.getElementById("container")
+        var menu4=document.getElementById("menu4")
+        var menu4_innerhtml=parser.parseFromString(menu4.outerHTML,'text/html')
+        if (data["DATA"]["coas"].length!=0){
+        menu4.outerHTML=""
+        }
+          var j=4
+        var nav_list=document.getElementById("nav_list_id")
+        var html_string=`<li><a data-toggle='tab' href='#menu3'style='float:left'>Invoice</a></li>`
+      if (data["DATA"]["coas"].length!==0){
+      html_string=html_string+`<li><a data-toggle='tab' style='float:left' href='#menu4'>CoA</a>
+          <div style='padding-left: 70px;'><button type='button' id="deleteButton" onclick='return deleteCoa("`+data["DATA"]["coas"][0].certificate_of_analsys_id+`","COA",this)' class='btn btn-outline-secondary' style='padding: 1px 2px;'>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+      <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z'></path>
+      <path fill-rule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'></path>
+      </svg></button></div></li>`
+        for(let i=0;i<data["DATA"]["coas"].length;i++){
+          if(i!=0){
+          html_string=html_string+"<li><a data-toggle='tab'style='float:left' href='#menu"+String(j)+"'>CoA "+String(i+1)+`</a><div style='padding-left: 70px'> <button type='button' id="deleteButton" onclick='return deleteCoa("`+data["DATA"]["coas"][i].certificate_of_analsys_id+`","COA",this)' class='btn btn-outline-secondary' style='padding: 1px 2px;'>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+      <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z'></path>
+      <path fill-rule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'></path>
+      </svg></button></div></li>`
+          }
+            let outer_html=menu4_innerhtml.cloneNode(true);
+            outer_html.getElementById("coa_expiry_date").placeholder=""
+        outer_html.getElementById("coa_date_of_manfacture").placeholder=""
+            outer_html.getElementById("menu4").id="menu"+String(j);
+            if (document.getElementById("menu"+String(j))!=null){
+              document.getElementById("menu"+String(j)).outerHTML=""
+            }
+            if(data["DATA"]["status"]=="Processed"){
+              // outer_html.getElementById("coa_button").remove();
+              outer_html.getElementById("coa_button").style.display='none';
+        }
+        else{
+          outer_html.getElementById("coa_button").style.display='block';
+        }
+            outer_html.getElementById("coa_sl_no").value=data["DATA"]["coas"][i].certificate_of_analsys_id;
+            outer_html.getElementById("coa_invoice_no").value=data["DATA"]["coas"][i].invoice_no;
+            outer_html.getElementById("coa_date_of_manfacture").value=data["DATA"]["coas"][i].date_of_manfacture;
+            outer_html.getElementById("coa_batch_no").value=data["DATA"]["coas"][i].batch;
+            outer_html.getElementById("coa_qty").value=data["DATA"]["coas"][i].quantity;
+            outer_html.getElementById("coa_unit").value=data["DATA"]["coas"][i].unit;
+
+            // outer_html.getElementById("coa_text").value=data["DATA"]["coas"][i].coa_text;
+            if (invoice_date!==null && data["DATA"]["coas"][i].date_of_manfacture==null){
+              data["DATA"]["coas"][i].date_of_manfacture=invoice_date
+              outer_html.getElementById("coa_date_of_manfacture").placeholder=invoice_date
+              outer_html.getElementById("coa_date_of_manfacture").setAttribute("class","changePLACE")
+            }
+            if(data["DATA"]["coas"][i].expiry_date == null){
+              var split_date=data["DATA"]["coas"][i].date_of_manfacture.split("/")
+              if (split_date.length==3){
+              var date=new Date(split_date[2],split_date[0]-1,split_date[1])
+            date.setDate(date.getDate()-1)
+            date.setFullYear(date.getFullYear()+1)
+              outer_html.getElementById("coa_expiry_date").placeholder=(date.getMonth()+1).toString()+"/"+date.getDate().toString()+"/"+date.getFullYear().toString()
+              outer_html.getElementById("coa_expiry_date").setAttribute("class","changePLACE")
+            }
+          }
+            else{
+            outer_html.getElementById("coa_expiry_date").value=data["DATA"]["coas"][i].expiry_date;
+            }
+            outer_html.getElementById("coa_add_path").value=data["DATA"]["coas"][i].doc_path;
+            outer_html.getElementById("coa_iframe").src=url+"load/pdf/"+String(data["DATA"]["coas"][i].certificate_of_analsys_id)+"/COA/"
+            container.appendChild(outer_html.getElementById("menu"+String(j)))
+            j++;
+          }
+        } 
+        // if(data["DATA"]["status"]!=="Processed"){
+          // html_string=html_string+"<li><a href='#menu_add_coa' data-toggle='tab'>Add CoA</a></li>"
+        // }
+        nav_list.innerHTML=html_string;
+        var button_list=document.getElementsByTagName('button');
+        if(data["DATA"]["status"]=="Processed"){
+          for(let k=0;k<button_list.length;k++){
+            if(button_list[k].id=='deleteButton'){
+              button_list[k].style.display='none';
+            }
+            else{
+              button_list[k].style.display='block';
+            }
+          }
+        }
+
+      },
+      error: function (jqXhr, textStatus, errorMessage) { // error callback 
+        console.log(errorMessage)
+      }
+      });
+            
+      });
+        function SaveStatus(){
+          const status="Ready for process"
+          var rows=document.getElementsByClassName("tr-class-2 selected")
+          if (rows.length===0){
+            return false;
+          }
+          var ids=[]
+          for(let i=0;i<=rows.length-1;i++){
+            if(rows[i].getAttribute("data-status")!=="Processed"){
+            ids.push(rows[i].getAttribute("data-invoice_id"))
+            }
+          }
+          $.ajax(url+"set/status/", 
+      {   type:"PUT",
+      data:{"ids":ids,"status":status},
+      headers:{"X-CSRFToken": getCookie('csrftoken')},
+      dataType: 'json', // type of response data
+      timeout: 500,     // timeout milliseconds
+      success: function (data,status,xhr) {
+        location.reload(true/false);
+      },
+      error: function (jqXhr, textStatus, errorMessage) { // error callback 
+        console.log(errorMessage)
+      }
+      });
+        }
+        function getCookie(name) {
+      // Split cookie string and get all individual name=value pairs in an array
+      var cookieArr = document.cookie.split(";");
+
+      // Loop through the array elements
+      for(var i = 0; i < cookieArr.length; i++) {
+          var cookiePair = cookieArr[i].split("=");
+          
+          /* Removing whitespace at the beginning of the cookie name
+          and compare it with the given string */
+          if(name == cookiePair[0].trim()) {
+              // Decode the cookie value and return
+              return decodeURIComponent(cookiePair[1]);
+          }
+      }
+
+      // Return null if not found
+      return null;
+      }
+      function deleteCoa(th,tmp_type,x){
+      if (confirm("Are You Sure To Delete This Coa...?")){
+      $.ajax(url+"delete/coa/", 
+      {   type:"DELETE",
+      data:{"certificate_of_analsys_id":th,},
+      headers:{"X-CSRFToken": getCookie('csrftoken')},
+      dataType: 'json', // type of response data
+      timeout: 500,     // timeout milliseconds
+      success: function (data,status,xhr) {
+        console.log(x.parentElement.parentElement.remove())
+      },
+      error: function (jqXhr, textStatus, errorMessage) { // error callback 
+        alert("Failed....!")
+      }
+      });
+      }
+
+      }
+
+      function stateFormatter(value, row, index) {
+      if(row["_data"]["status"]=="Processed"){
+        return {
+          disabled: true
+        }
+      }
+      return value
+      }
+      $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+      })
+
+      function FilterResults(th){
+      var query_param_string=""
+      var checked=th.parentElement.querySelectorAll('input[type="checkbox"]:checked'); 
+      if (checked.length!==0){
+      for(var ele of checked){
+        if (query_param_string==""){
+          query_param_string=query_param_string+"?status="+ele.value
+        }
+        else{
+          query_param_string=query_param_string+","+ele.value
+        }
+      }
+
+      }
+      var searhPoNO=document.getElementById("searchPONO").value;
+      if(searhPoNO.trim()!==""){
+      if(query_param_string.trim()==""){
+        query_param_string=query_param_string+"?po_number="+searhPoNO
+      }
+      else{
+        query_param_string=query_param_string+"&po_number="+searhPoNO
+      }
+      }
+      if(query_param_string.trim()!==""){
+      location.href=url.replace("api","index")+query_param_string
+      }
+      if (query_param_string.trim()=="" && location.href.includes("?")){
+      location.href=url.replace("api","index")
+      }
+      }
+      function clearFilters(){
+      if(location.href.includes("?")){
+      location.href=url.replace("api","index")
+      }
+      }
+      function loadFilters(){
+      var url=new URL(location.href)
+      var status=url.searchParams.get("status")
+      var searchPONO=url.searchParams.get("po_number")
+      if(status && status.trim()!==""){
+      var checked=document.getElementById("Filters").querySelectorAll('input[type="checkbox"]');
+      for(var ele of checked){
+        if (status.includes(ele.value)){
+          ele.checked=true;
+        }
+      }
+      }
+      if(searchPONO && searchPONO.trim()!==""){
+      document.getElementById("searchPONO").value=searchPONO
+      }
+      }
+      function showDoc(show,unshow){
+
+        document.getElementById(show).style.display="block";
+        document.getElementById(unshow).style.display="none";
+        document.getElementById(unshow).style.display="none";
+        // document.getElementById(show+"_a").style.background=" white";
+        // document.getElementById(unshow+"_a").style.background=" #181a1b";
+      }
+      loadFilters()
+    </script>
+  </body>
+</html>

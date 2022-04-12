@@ -1,0 +1,789 @@
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"
+    />
+    <link rel="stylesheet" href="{% static "/style.css" %}" />
+    
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+  <style>
+    a{
+      text-decoration: none;
+      text-emphasis-color: black;
+    }
+
+    .changePLACE::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: rgb(247, 11, 11);
+}
+.changePLACE:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color:  rgb(247, 11, 11);
+    opacity: 1;
+}
+.changePLACE::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: rgb(247, 11, 11);
+    opacity: 1;
+}
+.changePLACE:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color:  rgb(247, 11, 11);
+}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="main-head">
+          <img
+            src="https://www.evoketechnologies.com/wp-content/uploads/2020/07/Evoke_logo_for-web.svg"
+            width="250"
+            class="logo"
+          />
+          <div class="rightSide">
+            <img src="{% static 'images/bell.png' %}" />
+            <img src="{% static 'images/user-icon.png' %}" />
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="headeSec">
+        <div id="Filters">
+          
+        <div class="dropdown">
+          <button class="dropbtn">Status</button>
+          <div class="dropdown-content">
+            <a href="#"><input type="checkbox" name="checkbox" value="Processed"><span class="drp-span">Processed</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Ready for process"><span class="drp-span">Ready for process</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Draft"><span class="drp-span">Draft</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Not Processed"><span class="drp-span">Not Processed</span></a>
+          </div>
+        </div>
+        <input type="text"  placeholder="Search PO no..." id="searchPONO">
+        <button type="button" class="btn btn-dark btn-xs" onclick="return FilterResults(this)">Filter Results</button>
+        <button type="button" class="btn btn-light btn-xs" onclick="return clearFilters(this)">Clear Filters</button>
+      </div>
+        <div>
+          <a href="#" class="editBtn" onclick="return SaveStatus()">Submit</a>
+        </div>
+      </div>
+      <table
+        data-toggle="table"
+        data-classes="table table-hover"
+        data-row-style="rowColors"
+        data-striped="true"
+        data-sort-name="Quality"
+        data-sort-order="desc"
+        data-pagination="false"
+        data-click-to-select="false"
+        
+      >
+        <thead>
+          
+          <tr>
+            <th data-field="state" data-checkbox="true" data-formatter="stateFormatter"></th>
+            <th data-field="Sl_No" data-sortable="true">SL.No</th>
+            <th data-field="Po_No" data-sortable="true">PO No</th>
+            <th data-field="po_number_on_document" data-sortable="true">PO No On Doc</th>
+            <th data-field="Invoice" data-sortable="true">Invoice No</th>
+			      <th data-field="Status" data-sortable="true">Status</th>
+            <th data-field="Qty" data-sortable="true">Qty/Unit</th>
+           
+		   
+			<th data-field="Bill_Entry" data-sortable="true">Bill of Entry</th>
+			
+            <th data-field="Grn" data-sortable="true">GRN</th>
+            <!-- <th data-field="Material_Name" data-sortable="true">Material Name</th> -->
+            <th data-field="Created On" data-sortable="true">Cretaed On</th>
+            <th data-field="Modified ON" data-sortable="true">Modified ON</th>
+            <th data-field="Bot Comments" data-sortable="true">Bot Comments</th>
+            
+            
+            
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+          <tr id="tr-id-2" class="tr-class-2" data-invoice_id="{{row.invoice_id}}" data-status="{{ row.status}}">
+            <td></td>
+            <td data-field="SL.NO"><a href="#" data-toggle="modal" data-target="#myModal">{{row.invoice_id|default:""}}</a></td>
+            <td data-field="po_number" >
+              <div class="contentOverflow">{{row.po_number|default:""}}
+              </div>
+            </td>
+            <td data-field="po_number_on_document" >
+              <div class="contentOverflow">{{row.document_po_number|default:""}}
+              </div>
+            </td>
+            <td data-field="invoice_no">{{row.invoice_no|default:""}}</td>
+            <td data-field="status"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.status }}">
+              {{row.status|default:""}}</div></td>
+            <td data-field="quantity"><span style="float: left;">{{row.quantity|default:""}}</span><span style="float: left;">{{row.unit|default:""}}</span></td>
+            
+            <td data-field="bill_of_entry_no"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.bill_of_entry_no }}">{{row.bill_of_entry_no|default:""}}</div></td>
+            <td data-field="grn" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.grn }}">{{row.grn|default:""}}</div></td>
+            <!-- <td data-field="material_name">{{row.material_name|default:""}}</td> -->
+            <td data-field="Created On" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.created_on|timezone:'Asia/Calcutta' }}">{{row.created_on|timezone:'Asia/Calcutta'|date:"M d Y"|default:""}}</div></td>
+            <td data-field="Modified On"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.edited_on|timezone:'Asia/Calcutta' }}">{{row.edited_on|timezone:'Asia/Calcutta'|date:"M d Y"|default:""}}</div></td>
+            <td data-field="Bot Comments" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.bot_comments }}">{{row.bot_comments|default:""}}</div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        
+      </table>
+      <div style="float:right;padding-right: 30px;">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+            <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page=1" tabindex="-1" style="background: black;
+              color: white">First</a>
+            </li>
+            {% if page.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page={{ page.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {%else%}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" disabled>Previous</a>
+            </li>
+              {%endif%}
+            
+            {% for x in page_range%}
+            {%ifequal page.number x %}
+            <li class="page-item active"><a class="page-link" href="/index?{{path}}&page={{x}}">{{x}}</a></li>
+            {%endifequal%}
+          
+           {%ifnotequal page.number x %}
+            <li class="page-item"><a class="page-link" href="/index?{{path}}&page={{x}}">{{x}}</a></li>
+            {%endifnotequal%}
+           {%endfor%}
+            
+              {% if page.has_next %}
+              <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page={{ page.next_page_number  }}">Next</a>
+            </li>
+            {%else%}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" disabled>Next</a>
+                </li>
+              {%endif%}
+              <li class="page-item">
+                <a class="page-link" href="/index?{{path}}&page={{ paginator.num_pages }}&{{path}}" tabindex="-1" style="background: black;
+                color: white">Last</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    
+
+
+    
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body tab-content" id="container">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <div class="col-md-2">
+                  <label class="" id="Grn_deatils_id">GRN Details</label>
+                  <ul  id="nav_list_id">
+                    <li><a data-toggle="tab" href="#menu3">Invoice</a></li>
+
+                    <li><a data-toggle="tab" href="#menu4">CoA</a></li>
+              </ul>
+            </div>
+            <div
+              class="col-md-10 modalContent tab-pane fade in active"
+              id="menu3"
+            >
+              <h3>Invoice Details</h3>
+              <form action="/api/update/invoice/" method="post">
+                {% csrf_token %}
+                <div style="
+                padding-left: 850px;
+            ">
+              <input type="submit"  class="btn btn-dark" style="
+              width: 100px;
+              background-color: #111111;
+              color: white;
+              border-radius: 5px;
+          " value="Save" id="invoice_button">
+          </div>
+             
+              <div class="row">
+                
+                <div class="col-md-3">
+                    <label>Po No on Document</label>
+                    <input type="text" id="invoice_document_po_number" name="document_po_number"/>
+                  <input type="hidden" id="invoice_sl_no" name="invoice_id" />
+                </div>
+				    <div class="col-md-3">
+                  <label>Status</label>
+                  <input type="text" id="invoice_status" name="status" disabled="true"/>
+                </div>
+				      <div class="col-md-3">
+                  <label>Po No</label>
+                  <input type="text"  id="invoice_po_number" name="po_number"/>
+                </div>
+				      <div class="col-md-3">
+                  <label>Invoice #</label>
+                  <input type="text" id="invoice_no" name="invoice_no"/>
+                </div>
+				
+               </div>
+              
+			        <div class = "row">
+          
+                <div class="col-md-3">
+                  <label>Invoice Date (MM/DD/YYYY)</label>
+                  <input type="text" id="invoice_date" name="invoice_date"/>
+                </div>
+				      <div class="col-md-3">
+                  <label>Qty</label>
+                  <input type="text" id="invoice_qty" name="quantity"/>
+                </div>		
+				      <div class="col-md-3">
+                  <label>Unit</label>
+                  <input type="text"  id="invoice_unit" name="unit"/>
+                </div>
+				
+				
+			    </div>
+			  
+              <div class="row">
+			  
+			    <div class="col-md-3">
+                  <label>Bill of Entry </label>
+                  <input type="text" id="invoice_bill_of_entry" name="bill_of_entry_no"/>
+                </div>
+				  <div class="col-md-3">
+                  <label>Bill of Ladding</label>
+                  <input type="text" id="invoice_bill_of_loading" name="bill_of_ladding"/>
+                </div>
+                
+              </div>
+			  
+			  
+              <div class="row addCoaDiv">
+                <div class="col-md-3">
+                  <label>Invoice Document Path</label>
+                  <div class="input-group">
+                    <input type="text"   id="invoice_add_path" name="invoice_path"/>
+                    
+                  </div>
+                </div>
+              </div>
+              </form>
+
+              <div class="row imageSec">
+                <a id="invoice_iframe_a"onclick="return showDoc('invoice_iframe','boe_iframe')" style="width: 115px;
+                height: 25px;
+                background: #181a1b;
+                padding: 2px 2px 1px;
+                text-align: center;
+                border-radius: 1px 3px 2px;
+                color: white;
+                font-weight: bold;
+                line-height: 8px;">INVOICE</a>&nbsp;&nbsp;<a id="boe_iframe_a" onclick="return showDoc('boe_iframe','invoice_iframe')" style="width: 115px;
+                height: 25px;
+                background: #181a1b;
+                padding: 2px 2px 1px;
+                text-align: center;
+                border-radius: 1px 3px 2px;
+                color: white;
+                font-weight: bold;
+                line-height: 8px;">BOE</a>
+                <div class="imageHolder">
+                 
+                    <iframe
+                  id="invoice_iframe"
+                    src=""
+                    style="width: 100%; height: 100%; border: none;display: block"
+                  ></iframe>
+                  
+                  <iframe
+                  id="boe_iframe"
+                    src=""
+                    style="width: 100%; height: 100%; border: none; display: none;"
+                  ></iframe>
+                  
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-10 modalContent tab-pane fade" id="menu_add_coa">
+              <h3>CoA Details</h3>
+              <form action="/api/post/coa/" method="post">
+                {% csrf_token %}
+                <div style="
+                padding-left: 850px;
+            ">
+              <input type="submit"  class="btn btn-dark" style="
+              width: 100px;
+              background-color: #111111;
+              color: white;
+              border-radius: 5px;
+          " value="Save" >
+          </div>
+              
+              <div class="row">
+                <div class="col-md-3">
+                  
+                  <input type="hidden" id="add_coa_sl_no" name="invoice_no">
+                </div>
+                <div class="col-md-3">
+                  <label>Invoice #</label>
+                  <input type="text" id="add_coa_invoice_no" />
+                </div>
+                <div class="col-md-3">
+                  <label>Date of Manufacture</label>
+                  <input type="text" id="coa_date_of_manfacture" name="date_of_manfacture"/>
+                </div>
+				  <div class="col-md-3">
+                  <label>Batch No</label>
+                  <input type="text" id="coa_batch_no" name="batch"/>
+                </div>
+              </div>
+              <div class="row">
+                
+                <div class="col-md-3">
+                  <label>Qty</label>
+                  <input type="text" id="coa_qty" name="quantity"/>
+                </div>
+				  <div class="col-md-3">
+                  <label>Unit</label>
+                  <input type="text" id="coa_unit" name="unit"/>
+                </div>
+                <!-- <div class="col-md-3">
+                  <label>Text(Where Tab)</label>
+                  <input type="text" id="coa_text" name="coa_text"/>
+                </div> -->
+				  <div class="col-md-3">
+                  <label>Expiry date</label>
+                  <input type="text" id="coa_expiry_date" name="expiry_date"/>
+                </div>
+                <div class="col-md-3">
+                  <label>Coa Document Path</label>
+                  <div class="input-group">
+                    <input type="text" class="" id="coa_add_path" name="doc_path"/>
+                    
+                  </div>
+				
+              </div>
+
+              <div class="row addCoaDiv">
+                <!-- <div class="col-md-3">
+                  <label>Coa Document Path</label>
+                  <div class="input-group">
+                    <input type="text" class="" id="coa_add_path" name="doc_path"/>
+                    
+                  </div> -->
+                </div>
+              </div>
+              </form>
+              <div class="row imageSec">
+                <h5>Document</h5>
+                <div class="imageHolder">
+                  <iframe id="coa_iframe" src="" style="width: 100%; height: 100%; border: none"></iframe>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-10 modalContent tab-pane fade" id="menu4">
+              <form action="/api/update/coa/" method="post">
+                {% csrf_token %}
+                <div style="
+                padding-left: 850px;
+            ">
+              <input type="submit"  class="btn btn-dark" style="
+              width: 100px;
+              background-color: #111111;
+              color: white;
+              border-radius: 5px;
+          " value="Save" id="coa_button">
+          </div>
+              <h3>CoA Details</h3>
+              
+              
+              <div class="row">
+                
+                <div class="col-md-3">
+                  <input type="hidden" id="coa_sl_no" name="certificate_of_analsys_id"/>
+                </div>
+                <div class="col-md-3">
+                  <label>Invoice #</label>
+                  <input type="text" id="coa_invoice_no" name="invoice_no"/>
+                </div>
+                <div class="col-md-3">
+                  <label>Date of Manufacture</label>
+                  <input type="text" id="coa_date_of_manfacture" name="date_of_manfacture"/>
+                </div>
+				      <div class="col-md-3">
+                  <label>Batch No</label>
+                  <input type="text" id="coa_batch_no" name="batch"/>
+                </div>
+              </div>
+              <div class="row">
+                
+                <div class="col-md-3">
+                  <label>Qty</label>
+                  <input type="text" id="coa_qty" name="quantity"/>
+                </div>
+				        <div class="col-md-3">
+                  <label>Unit</label>
+                  <input type="text" id="coa_unit" name="unit"/>
+                </div>
+                <!-- <div class="col-md-3">
+                  <label>Text(Where Tab)</label>
+                  <input type="text" id="coa_text" name="coa_text"/>
+                </div> -->
+				        <div class="col-md-3">
+                  <label>Expiry date</label>
+                  <input type="text" id="coa_expiry_date" name="expiry_date"/>
+                </div>
+                <div class="col-md-3">
+                  <label>Coa Document Path</label>
+                  <div class="input-group">
+                    <input type="text" class="" id="coa_add_path" name="doc_path"/>
+                    
+                  </div>
+                </div>
+              </div>
+
+              <div class="row addCoaDiv">
+                <!-- <div class="col-md-3">
+                  <label>Coa Document Path</label>
+                  <div class="input-group">
+                    <input type="text" class="" id="coa_add_path" name="doc_path"/>
+                    
+                  </div>
+                </div> -->
+              </div>
+            </form>
+              <div class="row imageSec">
+                <h5>Document</h5>
+                <div class="imageHolder">
+                  <iframe
+                     id="coa_iframe"
+                    src="{% static 'images/Hari Om Enter.pdf' %}"
+                    style="width: 100%; height: 100%; border: none"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <script>
+      var parser = new DOMParser();
+      var url="http://{{ IP_ADDRESS}}:8000/api/"
+      if (location.href.includes('localhost')){
+        location.href=url.replace("api","index")
+      }
+      function queryParams() {
+        return {
+          type: 'owner',
+          sort: 'updated',
+          direction: 'desc',
+          per_page: 100,
+          page: 1,
+        };
+      }
+      // function rowColors(row, index) {
+      //   var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+      //   if (index % 2 === 0 && index / 2 < classes.length) {
+      //     return {
+      //       classes: classes[index / 2],
+      //     };
+      //   }
+      //   return {};
+      // }
+
+            $("body").on("click", ".tr-class-2", function () {
+          document.getElementById("menu3").className="col-md-10 modalContent tab-pane fade active in"
+        var invoice_id=this.getAttribute("data-invoice_id")
+          $.ajax(url+"load/invoice/"+String(invoice_id), 
+{   type:"GET",
+    dataType: 'json', // type of response data
+    timeout: 500,     // timeout milliseconds
+    success: function (data,status,xhr) {  // success callback function
+      if(data["DATA"]["status"]=="Processed"){
+        document.getElementById("invoice_button").style.display='none';
+      }
+      else{
+        document.getElementById("invoice_button").style.display='block';
+      }
+      document.getElementById("boe_iframe").src=""
+       document.getElementById("Grn_deatils_id").innerHTML="GRN Details of <b>"+data["DATA"]["invoice_id"].toString()+"</b>"
+       document.getElementById("invoice_sl_no").value=data["DATA"]["invoice_id"]
+       document.getElementById("invoice_document_po_number").value=data["DATA"]["document_po_number"]
+       document.getElementById("add_coa_sl_no").value=data["DATA"]["invoice_no"]
+       document.getElementById("add_coa_invoice_no").value=data["DATA"]["invoice_no"]
+       var invoice_date=data["DATA"]["invoice_date"]
+       document.getElementById("add_coa_invoice_no").disabled=true;
+       document.getElementById("invoice_status").value=data["DATA"]["status"]
+       document.getElementById("invoice_po_number").value=data["DATA"]["po_number"]
+       document.getElementById("invoice_no").value=data["DATA"]["invoice_no"]
+       document.getElementById("invoice_date").value=data["DATA"]["invoice_date"]
+       document.getElementById("invoice_qty").value=data["DATA"]["quantity"]
+       document.getElementById("invoice_unit").value=data["DATA"]["unit"]
+      //  document.getElementById("invoice_batch").value=data["DATA"]["batch"]
+       document.getElementById("invoice_bill_of_entry").value=data["DATA"]["bill_of_entry_no"]
+       document.getElementById("invoice_bill_of_loading").value=data["DATA"]["bill_of_ladding"]
+       document.getElementById("invoice_add_path").value=data["DATA"]["invoice_path"]
+       document.getElementById("invoice_iframe").src=url+"load/pdf/"+String(data["DATA"]["invoice_id"])+"/invoice/"
+       if(data["DATA"]["boe_doc_path"]!==null){
+        document.getElementById("boe_iframe").src=url+"load/pdf/"+String(data["DATA"]["invoice_id"])+"/boe/"
+       }
+       var container=document.getElementById("container")
+       var menu4=document.getElementById("menu4")
+       var menu4_innerhtml=parser.parseFromString(menu4.outerHTML,'text/html')
+       if (data["DATA"]["coas"].length!=0){
+       menu4.outerHTML=""
+       }
+        var j=4
+       var nav_list=document.getElementById("nav_list_id")
+       var html_string=`<li><a data-toggle='tab' href='#menu3'style='float:left'>Invoice</a></li>`
+if (data["DATA"]["coas"].length!==0){
+    html_string=html_string+`<li><a data-toggle='tab' style='float:left' href='#menu4'>CoA</a>
+        <div style='padding-left: 70px;'><button type='button' id="deleteButton" onclick='return deleteCoa("`+data["DATA"]["coas"][0].certificate_of_analsys_id+`","COA",this)' class='btn btn-outline-secondary' style='padding: 1px 2px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+  <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z'></path>
+  <path fill-rule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'></path>
+</svg></button></div></li>`
+       for(let i=0;i<data["DATA"]["coas"].length;i++){
+         if(i!=0){
+         html_string=html_string+"<li><a data-toggle='tab'style='float:left' href='#menu"+String(j)+"'>CoA "+String(i+1)+`</a><div style='padding-left: 70px'> <button type='button' id="deleteButton" onclick='return deleteCoa("`+data["DATA"]["coas"][i].certificate_of_analsys_id+`","COA",this)' class='btn btn-outline-secondary' style='padding: 1px 2px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+  <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z'></path>
+  <path fill-rule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'></path>
+</svg></button></div></li>`
+         }
+          let outer_html=menu4_innerhtml.cloneNode(true);
+          outer_html.getElementById("coa_expiry_date").placeholder=""
+      outer_html.getElementById("coa_date_of_manfacture").placeholder=""
+          outer_html.getElementById("menu4").id="menu"+String(j);
+          if (document.getElementById("menu"+String(j))!=null){
+            document.getElementById("menu"+String(j)).outerHTML=""
+          }
+          if(data["DATA"]["status"]=="Processed"){
+            // outer_html.getElementById("coa_button").remove();
+            outer_html.getElementById("coa_button").style.display='none';
+      }
+      else{
+        outer_html.getElementById("coa_button").style.display='block';
+      }
+          outer_html.getElementById("coa_sl_no").value=data["DATA"]["coas"][i].certificate_of_analsys_id;
+          outer_html.getElementById("coa_invoice_no").value=data["DATA"]["coas"][i].invoice_no;
+          outer_html.getElementById("coa_date_of_manfacture").value=data["DATA"]["coas"][i].date_of_manfacture;
+          outer_html.getElementById("coa_batch_no").value=data["DATA"]["coas"][i].batch;
+          outer_html.getElementById("coa_qty").value=data["DATA"]["coas"][i].quantity;
+          outer_html.getElementById("coa_unit").value=data["DATA"]["coas"][i].unit;
+          // outer_html.getElementById("coa_text").value=data["DATA"]["coas"][i].coa_text;
+          if (invoice_date!==null && data["DATA"]["coas"][i].date_of_manfacture==null){
+            data["DATA"]["coas"][i].date_of_manfacture=invoice_date
+            outer_html.getElementById("coa_date_of_manfacture").placeholder=invoice_date
+            outer_html.getElementById("coa_date_of_manfacture").setAttribute("class","changePLACE")
+          }
+          if(data["DATA"]["coas"][i].expiry_date == null){
+            var split_date=data["DATA"]["coas"][i].date_of_manfacture.split("/")
+            if (split_date.length==3){
+            var date=new Date(split_date[2],split_date[0]-1,split_date[1])
+           date.setDate(date.getDate()-1)
+           date.setFullYear(date.getFullYear()+1)
+            outer_html.getElementById("coa_expiry_date").placeholder=(date.getMonth()+1).toString()+"/"+date.getDate().toString()+"/"+date.getFullYear().toString()
+            outer_html.getElementById("coa_expiry_date").setAttribute("class","changePLACE")
+          }
+        }
+          else{
+          outer_html.getElementById("coa_expiry_date").value=data["DATA"]["coas"][i].expiry_date;
+          }
+          outer_html.getElementById("coa_add_path").value=data["DATA"]["coas"][i].doc_path;
+          outer_html.getElementById("coa_iframe").src=url+"load/pdf/"+String(data["DATA"]["coas"][i].certificate_of_analsys_id)+"/COA/"
+          container.appendChild(outer_html.getElementById("menu"+String(j)))
+          j++;
+        }
+      } 
+      // if(data["DATA"]["status"]!=="Processed"){
+        // html_string=html_string+"<li><a href='#menu_add_coa' data-toggle='tab'>Add CoA</a></li>"
+      // }
+       nav_list.innerHTML=html_string;
+       var button_list=document.getElementsByTagName('button');
+       if(data["DATA"]["status"]=="Processed"){
+         for(let k=0;k<button_list.length;k++){
+           if(button_list[k].id=='deleteButton'){
+             button_list[k].style.display='none';
+           }
+           else{
+            button_list[k].style.display='block';
+           }
+         }
+       }
+
+    },
+    error: function (jqXhr, textStatus, errorMessage) { // error callback 
+      console.log(errorMessage)
+    }
+});
+          
+});
+      function SaveStatus(){
+        const status="Ready for process"
+        var rows=document.getElementsByClassName("tr-class-2 selected")
+        if (rows.length===0){
+          return false;
+        }
+        var ids=[]
+        for(let i=0;i<=rows.length-1;i++){
+          if(rows[i].getAttribute("data-status")!=="Processed"){
+          ids.push(rows[i].getAttribute("data-invoice_id"))
+          }
+        }
+        $.ajax(url+"set/status/", 
+{   type:"PUT",
+    data:{"ids":ids,"status":status},
+    headers:{"X-CSRFToken": getCookie('csrftoken')},
+    dataType: 'json', // type of response data
+    timeout: 500,     // timeout milliseconds
+    success: function (data,status,xhr) {
+      location.reload(true/false);
+    },
+    error: function (jqXhr, textStatus, errorMessage) { // error callback 
+      console.log(errorMessage)
+    }
+});
+      }
+      function getCookie(name) {
+    // Split cookie string and get all individual name=value pairs in an array
+    var cookieArr = document.cookie.split(";");
+    
+    // Loop through the array elements
+    for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        
+        /* Removing whitespace at the beginning of the cookie name
+        and compare it with the given string */
+        if(name == cookiePair[0].trim()) {
+            // Decode the cookie value and return
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    
+    // Return null if not found
+    return null;
+}
+function deleteCoa(th,tmp_type,x){
+  if (confirm("Are You Sure To Delete This Coa...?")){
+  $.ajax(url+"delete/coa/", 
+{   type:"DELETE",
+    data:{"certificate_of_analsys_id":th,},
+    headers:{"X-CSRFToken": getCookie('csrftoken')},
+    dataType: 'json', // type of response data
+    timeout: 500,     // timeout milliseconds
+    success: function (data,status,xhr) {
+      console.log(x.parentElement.parentElement.remove())
+    },
+    error: function (jqXhr, textStatus, errorMessage) { // error callback 
+      alert("Failed....!")
+    }
+});
+  }
+  
+}
+
+function stateFormatter(value, row, index) {
+    if(row["_data"]["status"]=="Processed"){
+      return {
+        disabled: true
+      }
+    }
+    return value
+  }
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+function FilterResults(th){
+  var query_param_string=""
+  var checked=th.parentElement.querySelectorAll('input[type="checkbox"]:checked'); 
+  if (checked.length!==0){
+    for(var ele of checked){
+      if (query_param_string==""){
+        query_param_string=query_param_string+"?status="+ele.value
+      }
+      else{
+        query_param_string=query_param_string+","+ele.value
+      }
+    }
+   
+  }
+  var searhPoNO=document.getElementById("searchPONO").value;
+  if(searhPoNO.trim()!==""){
+    if(query_param_string.trim()==""){
+      query_param_string=query_param_string+"?po_number="+searhPoNO
+    }
+    else{
+      query_param_string=query_param_string+"&po_number="+searhPoNO
+    }
+  }
+  if(query_param_string.trim()!==""){
+    location.href=url.replace("api","index")+query_param_string
+  }
+  if (query_param_string.trim()=="" && location.href.includes("?")){
+    location.href=url.replace("api","index")
+  }
+}
+function clearFilters(){
+  if(location.href.includes("?")){
+  location.href=url.replace("api","index")
+  }
+}
+function loadFilters(){
+  var url=new URL(location.href)
+  var status=url.searchParams.get("status")
+  var searchPONO=url.searchParams.get("po_number")
+  if(status && status.trim()!==""){
+    var checked=document.getElementById("Filters").querySelectorAll('input[type="checkbox"]');
+    for(var ele of checked){
+      if (status.includes(ele.value)){
+        ele.checked=true;
+      }
+    }
+  }
+  if(searchPONO && searchPONO.trim()!==""){
+    document.getElementById("searchPONO").value=searchPONO
+  }
+}
+function showDoc(show,unshow){
+  
+  document.getElementById(show).style.display="block";
+  document.getElementById(unshow).style.display="none";
+  // document.getElementById(show+"_a").style.background=" white";
+  // document.getElementById(unshow+"_a").style.background=" #181a1b";
+}
+loadFilters()
+    </script>
+  </body>
+</html>

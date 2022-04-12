@@ -1,0 +1,361 @@
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"
+    />
+    <link rel="stylesheet" href="{% static "/style.css" %}" />
+    
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+  <style>
+    a{
+      text-decoration: none;
+      text-emphasis-color: black;
+    }
+
+    .changePLACE::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: rgb(247, 11, 11);
+}
+.changePLACE:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color:  rgb(247, 11, 11);
+    opacity: 1;
+}
+.changePLACE::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: rgb(247, 11, 11);
+    opacity: 1;
+}
+.changePLACE:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color:  rgb(247, 11, 11);
+}
+
+.leftside{
+          height: 60vh;
+          width: 40%;
+          float: left;
+        }
+.rightside{
+          height: 60vh;
+          width: 60%;
+          float: left;
+        }
+.rightside{
+  background:rgb(190, 185, 206) ;
+}
+.leftside{
+  background: rgb(214, 204, 197);
+}
+
+
+
+.table {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+}
+
+.table thead th {
+  border: 1px solid #e4eff8;
+  background: rgb(240, 235, 235);
+  cursor: pointer;
+}
+
+.table thead th.header-label {
+  cursor: pointer;
+  background: linear-gradient(0deg, #e4eff8, #4578a2 5%, #e4eff8 150%);
+  color: rgb(238, 232, 232);
+  border: 1px solid white;
+}
+
+.table th,
+.table td {
+  padding: 0.2rem 0.5rem;
+  text-align: center;
+}
+
+.table td {
+  border: 1px solid #e4eff8;
+}
+
+.table .tr-inputs th {
+  position: relative;
+  padding: 0;
+  padding-bottom: 1.2rem;
+  margin: 0;
+}
+
+.table .tr-inputs div {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.table input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ScrollStyle
+  {
+      max-height: 30px;
+      overflow-y: scroll;
+  }
+
+  @import "compass/css3";
+
+.table-editable {
+  position: relative;
+  
+}
+
+
+</style>
+
+
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="main-head">
+          <img
+            src="https://www.evoketechnologies.com/wp-content/uploads/2020/07/Evoke_logo_for-web.svg"
+            width="250"
+            class="logo"
+          />
+          <div class="rightSide">
+            <img src="{% static 'images/bell.png' %}" />
+            <img src="{% static 'images/user-icon.png' %}" />
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="headeSec">
+        <div id="Filters">
+          
+        <div class="dropdown">
+          <button class="dropbtn">Status</button>
+          <div class="dropdown-content">
+            <a href="#"><input type="checkbox" name="checkbox" value="Processed"><span class="drp-span">Processed</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Ready for process"><span class="drp-span">Ready for process</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Draft"><span class="drp-span">Draft</span></a>
+            <a href="#"><input type="checkbox" name="checkbox" value="Not Processed"><span class="drp-span">Not Processed</span></a>
+          </div>
+        </div>
+        <input type="text"  placeholder="Search PO no..." id="searchPONO">
+        <button type="button" class="btn btn-dark btn-xs" onclick="return FilterResults(this)">Filter Results</button>
+        <button type="button" class="btn btn-light btn-xs" onclick="return clearFilters(this)">Clear Filters</button>
+      </div>
+        <div>
+          <a href="#" class="editBtn" onclick="return SaveStatus()">Submit</a>
+        </div>
+      </div>
+      <table
+        data-toggle="table"
+        data-classes="table table-hover"
+        data-row-style="rowColors"
+        data-striped="true"
+        data-sort-name="Quality"
+        data-sort-order="desc"
+        data-pagination="false"
+        data-click-to-select="false"
+        
+      >
+        <thead>
+          
+          <tr>
+            <th data-field="state" data-checkbox="true" data-formatter="stateFormatter"></th>
+            <th data-field="Sl_No" data-sortable="true">SL.No</th>
+            <th data-field="Po_No" data-sortable="true">PO No</th>
+            <th data-field="po_number_on_document" data-sortable="true">PO No On Doc</th>
+            <th data-field="Invoice" data-sortable="true">Invoice No</th>
+			      <th data-field="Status" data-sortable="true">Status</th>
+            <th data-field="Qty" data-sortable="true">Qty/Unit</th>
+			      <th data-field="Bill_Entry" data-sortable="true">Bill of Entry</th>
+            <th data-field="Grn" data-sortable="true">GRN</th>
+            <!-- <th data-field="Material_Name" data-sortable="true">Material Name</th> -->
+            <th data-field="Created On" data-sortable="true">Cretaed On</th>
+            <th data-field="Modified ON" data-sortable="true">Modified ON</th>
+            <th data-field="Bot Comments" data-sortable="true">Bot Comments</th>
+            
+            
+            
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+          <tr id="tr-id-2" class="tr-class-2" data-invoice_id="{{row.invoice_id}}" data-status="{{ row.status}}">
+            <td></td>
+            <!-- <td data-field="SL.NO"><a href="{% url 'sample' %}" >{{row.invoice_id|default:""}}</a></td> -->
+            <td data-field="SL.NO"><a href="/api/get/invoice/?invoice_id={{row.invoice_id}}">{{row.invoice_id|default:""}}</a></td>
+
+            <td data-field="po_number" >
+              <div class="contentOverflow">{{row.po_number|default:""}}
+              </div>
+            </td>
+            <td data-field="po_number_on_document" >
+              <div class="contentOverflow">{{row.document_po_number|default:""}}
+              </div>
+            </td>
+            <td data-field="invoice_no">{{row.invoice_no|default:""}}</td>
+            <td data-field="status"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.status }}">
+              {{row.status|default:""}}</div></td>
+            <td data-field="quantity"><span style="float: left;">{{row.quantity|default:""}}</span><span style="float: left;">{{row.unit|default:""}}</span></td>
+            
+            <td data-field="bill_of_entry_no"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.bill_of_entry_no }}">{{row.bill_of_entry_no|default:""}}</div></td>
+            <td data-field="grn" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.grn }}">{{row.grn|default:""}}</div></td>
+            <!-- <td data-field="material_name">{{row.material_name|default:""}}</td> -->
+            <td data-field="Created On" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.created_on|timezone:'Asia/Calcutta' }}">{{row.created_on|timezone:'Asia/Calcutta'|date:"M d Y"|default:""}}</div></td>
+            <td data-field="Modified On"><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.edited_on|timezone:'Asia/Calcutta' }}">{{row.edited_on|timezone:'Asia/Calcutta'|date:"M d Y"|default:""}}</div></td>
+            <td data-field="Bot Comments" ><div class="contentOverflow" data-toggle="tooltip" data-placement="top" data-html="true" title="{{row.bot_comments }}">{{row.bot_comments|default:""}}</div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        
+      </table>
+      <div style="float:right;padding-right: 30px;">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+            <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page=1" tabindex="-1" style="background: black;
+              color: rgb(248, 245, 245)">First</a>
+            </li>
+            {% if page.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page={{ page.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {%else%}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" disabled>Previous</a>
+            </li>
+              {%endif%}
+            
+            {% for x in page_range%}
+            {%ifequal page.number x %}
+            <li class="page-item active"><a class="page-link" href="/index?{{path}}&page={{x}}">{{x}}</a></li>
+            {%endifequal%}
+          
+           {%ifnotequal page.number x %}
+            <li class="page-item"><a class="page-link" href="/index?{{path}}&page={{x}}">{{x}}</a></li>
+            {%endifnotequal%}
+           {%endfor%}
+            
+              {% if page.has_next %}
+              <li class="page-item">
+              <a class="page-link" href="/index?{{path}}&page={{ page.next_page_number  }}">Next</a>
+            </li>
+            {%else%}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" disabled>Next</a>
+                </li>
+              {%endif%}
+              <li class="page-item">
+                <a class="page-link" href="/index?{{path}}&page={{ paginator.num_pages }}&{{path}}" tabindex="-1" style="background: black;
+                color: white">Last</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    
+
+    <script>
+      var parser = new DOMParser();
+      var url="http://{{ IP_ADDRESS}}:8000/api/"
+      if (location.href.includes('localhost')){
+        location.href=url.replace("api","index")
+      }
+
+    
+      function stateFormatter(value, row, index) {
+        if(row["_data"]["status"]=="Processed"){
+          return {
+            disabled: true
+          }
+        }
+        return value
+      }
+      $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    }) 
+
+
+
+
+    function FilterResults(th){
+      var query_param_string=""
+      var checked=th.parentElement.querySelectorAll('input[type="checkbox"]:checked'); 
+      if (checked.length!==0){
+        for(var ele of checked){
+          if (query_param_string==""){
+            query_param_string=query_param_string+"?status="+ele.value
+          }
+          else{
+            query_param_string=query_param_string+","+ele.value
+          }
+        }
+      
+      }
+      var searhPoNO=document.getElementById("searchPONO").value;
+      if(searhPoNO.trim()!==""){
+        if(query_param_string.trim()==""){
+          query_param_string=query_param_string+"?po_number="+searhPoNO
+        }
+        else{
+          query_param_string=query_param_string+"&po_number="+searhPoNO
+        }
+      }
+      if(query_param_string.trim()!==""){
+        location.href=url.replace("api","index")+query_param_string
+      }
+      if (query_param_string.trim()=="" && location.href.includes("?")){
+        location.href=url.replace("api","index")
+      }
+    }
+    function clearFilters(){
+      if(location.href.includes("?")){
+      location.href=url.replace("api","index")
+      }
+    }
+    function loadFilters(){
+      var url=new URL(location.href)
+      var status=url.searchParams.get("status")
+      var searchPONO=url.searchParams.get("po_number")
+      if(status && status.trim()!==""){
+        var checked=document.getElementById("Filters").querySelectorAll('input[type="checkbox"]');
+        for(var ele of checked){
+          if (status.includes(ele.value)){
+            ele.checked=true;
+          }
+        }
+      }
+      if(searchPONO && searchPONO.trim()!==""){
+        document.getElementById("searchPONO").value=searchPONO
+      }
+    }
+
+</script>
+
+  </body>
+</html>
+
